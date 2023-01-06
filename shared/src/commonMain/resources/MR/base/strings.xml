@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="app_name" translatable="false">Aliasica</string>
+    <string name="game_start">Start</string>
+    <string name="game_time">Time</string>
+    <string name="game_finish_round_title">Finish round?</string>
+    <string name="game_finish_round_message">Do you want to finish this round?</string>
+    <string name="game_finish_positive">Yes</string>
+    <string name="game_finish_negative">No</string>
+    <string name="game_finish_title">Do you want to finish the game?</string>
+    <string name="game_finish_message">Do you want to finish the game? The winner will be determined
+        by the number of points
+    </string>
+    <string name="game_correct">Correct</string>
+    <string name="game_wrong">Wrong</string>
+    <string name="game_end">Team\n %1$s\n won</string>
+    <string name="gamemode_stack">Stack</string>
+    <string name="gamemode_standard">Standard</string>
+    <string name="gamemode_swipe">Swipe</string>
+    <string name="main_home">Home</string>
+    <string name="main_settings">Settings</string>
+    <string name="next">Next</string>
+    <string name="play_time">How long should a round last?</string>
+    <string name="play_start_game">Start Game</string>
+    <string name="play_team_two">Team 2</string>
+    <string name="play_team_one">Team 1</string>
+    <string name="play_gamemode">Choose a game mode</string>
+    <string name="play_points">How many points does it take to win?</string>
+    <string name="play_teams">Name your teams</string>
+    <string name="wordset_play">Play</string>
+</resources>

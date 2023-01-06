@@ -1,0 +1,3 @@
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CardStack.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MultiPlatformLibrary.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/mokoMvvmFlowSwiftUI.framework

@@ -1,0 +1,28 @@
+PODS:
+  - mokoMvvmFlowSwiftUI (0.13.0)
+  - shared (1.0)
+  - SwiftUICardStack (0.0.5)
+
+DEPENDENCIES:
+  - mokoMvvmFlowSwiftUI (from `https://raw.githubusercontent.com/icerockdev/moko-mvvm/release/0.13.0/mokoMvvmFlowSwiftUI.podspec`)
+  - shared (from `../shared`)
+  - SwiftUICardStack
+
+SPEC REPOS:
+  trunk:
+    - SwiftUICardStack
+
+EXTERNAL SOURCES:
+  mokoMvvmFlowSwiftUI:
+    :podspec: https://raw.githubusercontent.com/icerockdev/moko-mvvm/release/0.13.0/mokoMvvmFlowSwiftUI.podspec
+  shared:
+    :path: "../shared"
+
+SPEC CHECKSUMS:
+  mokoMvvmFlowSwiftUI: 64572433b11ad2512ddc16141fc64cf8b958c675
+  shared: 28f73096ac05dc0bd303882cef4c6d778e15e9d0
+  SwiftUICardStack: 61238438719132abd9190208728b447bff3d1333
+
+PODFILE CHECKSUM: 731dcd114f6b8226c1708ecd88fbbb66e1a47c74
+
+COCOAPODS: 1.11.3
