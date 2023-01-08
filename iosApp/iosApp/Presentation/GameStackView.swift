@@ -1,12 +1,15 @@
 import SwiftUI
 import Foundation
 import MultiPlatformLibrary
+import MultiPlatformLibrarySwift
+import mokoMvvmFlowSwiftUI
+import Combine
 
 struct GameStackView: View {
+    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @ObservedObject private var viewModel: GameViewModel
-    @State private var playingTeamScore: Int
     private var wordClick: (Int32) -> Void
-    private var playingTeamName: String
+    @State private var playingTeamName: String = ""
     
     init(viewModel: GameViewModel) {
         self.viewModel = viewModel
@@ -15,10 +18,8 @@ struct GameStackView: View {
         }
         if(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone) {
             playingTeamName = viewModel.teamOneName
-            playingTeamScore = viewModel.state(\.teamOneScore)
         } else {
             playingTeamName = viewModel.teamTwoName
-            playingTeamScore = viewModel.state(\.teamTwoScore)
         }
     }
     
@@ -51,13 +52,14 @@ struct GameStackView: View {
                 CardView {
                     ScrollView(showsIndicators: false) {
                         VStack(alignment: .leading) {
-                            ForEach(viewModel.state(\.words), id: \.element) {
-                                StackWord(text:\($0)) {
-                                    wordClick(Int32(index))
+                            ForEach((viewModel.state(\.stackWords) as [NSString]).enumerated().map { IndexedString(index: $0, string: $1) }, id: \.index) { indexedString in
+                                StackWord(text: String(indexedString.string)) {
+                                    wordClick(Int32(indexedString.index))
                                 }
                             }
                         }
-                    }.scrollEnabled(false)
+                    }
+                    .scrollEnabled(false)
                 }
                 .ignoresSafeArea(.all, edges: .bottom)
             }
@@ -65,10 +67,26 @@ struct GameStackView: View {
             .ignoresSafeArea(.all, edges: .bottom)
         }
         .onAppear {
+            if(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone) {
+                playingTeamName = viewModel.teamOneName
+            } else {
+                playingTeamName = viewModel.teamTwoName
+            }
             viewModel.startTimer()
         }
+        .onReceive(createPublisher(viewModel.actions)) { action in
+            let actionKs = GameViewModelActionKs(action)
+            switch(actionKs) {
+            case .roundFinished:
+                print("round finished")
+                mode.wrappedValue.dismiss()
+                break
+            default:
+                print("else")
+                break
+            }
+        }
         .ignoresSafeArea(.all, edges: .bottom)
-        
     }
 }
 
@@ -89,6 +107,11 @@ struct StackWord: View {
         
         
     }
+}
+
+struct IndexedString {
+    let index: Int
+    let string: NSString
 }
 
 struct GameStackView_Previews: PreviewProvider {

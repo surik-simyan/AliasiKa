@@ -4,9 +4,14 @@ import MultiPlatformLibrary
 struct GameScoreView: View {
     private var viewModel: GameViewModel
     @State private var showAlertDialog = false
+    @State private var teamOneScore = 0
+    @State private var teamTwoScore = 0
+
     
     init(viewModel: GameViewModel) {
         self.viewModel = viewModel
+        teamOneScore = viewModel.teamOneScore.value!.intValue
+        teamTwoScore = viewModel.teamTwoScore.value!.intValue
     }
     
     
@@ -21,7 +26,7 @@ struct GameScoreView: View {
                         VStack{
                             Text(viewModel.teamOneName)
                                 .font(.system(size: 24))
-                            Text(String(viewModel.teamOneScore.value!.intValue))
+                            Text(String(teamOneScore))
                                 .font(.system(size: 32, weight: .bold))
                         }
                         .frame(minWidth: 0, maxWidth: .infinity)
@@ -29,7 +34,7 @@ struct GameScoreView: View {
                         VStack {
                             Text(viewModel.teamTwoName)
                                 .font(.system(size: 24))
-                            Text(String(viewModel.teamTwoScore.value!.intValue))
+                            Text(String(teamTwoScore))
                                 .font(.system(size: 32, weight: .bold))
                         }
                         .frame(minWidth: 0, maxWidth: .infinity)
@@ -51,6 +56,10 @@ struct GameScoreView: View {
                 Spacer()
             }
             .padding(16)
+            .onAppear {
+                teamOneScore = viewModel.teamOneScore.value!.intValue
+                teamTwoScore = viewModel.teamTwoScore.value!.intValue
+            }
         }
     }
     

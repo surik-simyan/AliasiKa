@@ -4,8 +4,3 @@ framework module mokoMvvmFlowSwiftUI {
   export *
   module * { export * }
 }
-
-module mokoMvvmFlowSwiftUI.Swift {
-    header "mokoMvvmFlowSwiftUI-Swift.h"
-    requires objc
-}

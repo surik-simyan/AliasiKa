@@ -17,10 +17,10 @@ RSYNC_PROTECT_TMP_FILES=(--filter "P .*.??????")
 variant_for_slice()
 {
   case "$1" in
-  "mokoMvvmFlowSwiftUI.xcframework/ios-arm64")
+  "mokoMvvmFlowSwiftUI.xcframework/macos-x86_64")
     echo ""
     ;;
-  "mokoMvvmFlowSwiftUI.xcframework/macos-x86_64")
+  "mokoMvvmFlowSwiftUI.xcframework/ios-arm64")
     echo ""
     ;;
   "mokoMvvmFlowSwiftUI.xcframework/ios-arm64_x86_64-simulator")
@@ -32,11 +32,11 @@ variant_for_slice()
 archs_for_slice()
 {
   case "$1" in
-  "mokoMvvmFlowSwiftUI.xcframework/ios-arm64")
-    echo "arm64"
-    ;;
   "mokoMvvmFlowSwiftUI.xcframework/macos-x86_64")
     echo "x86_64"
+    ;;
+  "mokoMvvmFlowSwiftUI.xcframework/ios-arm64")
+    echo "arm64"
     ;;
   "mokoMvvmFlowSwiftUI.xcframework/ios-arm64_x86_64-simulator")
     echo "arm64 x86_64"

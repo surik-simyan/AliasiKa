@@ -1,5 +1,6 @@
 import SwiftUI
 import MultiPlatformLibrary
+import MultiPlatformLibrarySwift
 import mokoMvvmFlowSwiftUI
 import Combine
 
@@ -8,8 +9,9 @@ struct GameStandardView: View {
     @State private var showingAlert = false
     @ObservedObject private var viewModel: GameViewModel
     @State private var wordsStates = [false, false, false, false, false]
+    @State private var playingTeamName: String = ""
+
     private var wordClick: (Binding<Bool>) -> Void
-    private var playingTeamName: String
     
     
     init(viewModel: GameViewModel) {
@@ -31,53 +33,69 @@ struct GameStandardView: View {
     
     
     var body: some View {
-        ZStack {
-            Color(UIColor.secondary)
-                .ignoresSafeArea()
-            
-            VStack(alignment: .leading) {
-                CardViewWithPadding {
-                    HStack {
-                        VStack{
-                            Text(playingTeamName)
-                                .font(.system(size: 24))
-                            Text(String(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone ? viewModel.state(\.teamOneScore) : viewModel.state(\.teamTwoScore)))
-                                .font(.system(size: 32, weight: .bold))
+        Group {
+            ZStack {
+                Color(UIColor.secondary)
+                    .ignoresSafeArea()
+                
+                VStack(alignment: .leading) {
+                    CardViewWithPadding {
+                        HStack {
+                            VStack{
+                                Text(playingTeamName)
+                                    .font(.system(size: 24))
+                                Text(String(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone ? viewModel.state(\.teamOneScore) : viewModel.state(\.teamTwoScore)))
+                                    .font(.system(size: 32, weight: .bold))
+                            }
+                            .frame(minWidth: 0, maxWidth: .infinity)
+                            Spacer()
+                            VStack {
+                                Text(SharedStrings.shared.gameTime.localized())
+                                    .font(.system(size: 24))
+                                Text(viewModel.state(\.remainingTime))
+                                    .font(.system(size: 32, weight: .bold))
+                            }
+                            .frame(minWidth: 0, maxWidth: .infinity)
                         }
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                        Spacer()
-                        VStack {
-                            Text(SharedStrings.shared.gameTime.localized())
-                                .font(.system(size: 24))
-                            Text(viewModel.state(\.remainingTime))
-                                .font(.system(size: 32, weight: .bold))
+                    }.fixedSize(horizontal: false, vertical: true)
+                    Spacer()
+                    CardView {
+                        VStack(spacing: 0) {
+                            Word(text: viewModel.state(\.fiveWords)[0], wordClicked: $wordsStates[0], onWordClick: wordClick)
+                            Word(text: viewModel.state(\.fiveWords)[1], wordClicked: $wordsStates[1], onWordClick: wordClick)
+                            Word(text: viewModel.state(\.fiveWords)[2], wordClicked: $wordsStates[2], onWordClick: wordClick)
+                            Word(text: viewModel.state(\.fiveWords)[3], wordClicked: $wordsStates[3], onWordClick: wordClick)
+                            Word(text: viewModel.state(\.fiveWords)[4], wordClicked: $wordsStates[4], onWordClick: wordClick)
                         }
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                    }
-                }.fixedSize(horizontal: false, vertical: true)
-                Spacer()
-                CardView {
-                    VStack(spacing: 0) {
-                        Word(text: viewModel.state(\.fiveWords)[0], wordClicked: $wordsStates[0], onWordClick: wordClick)
-                        Word(text: viewModel.state(\.fiveWords)[1], wordClicked: $wordsStates[1], onWordClick: wordClick)
-                        Word(text: viewModel.state(\.fiveWords)[2], wordClicked: $wordsStates[2], onWordClick: wordClick)
-                        Word(text: viewModel.state(\.fiveWords)[3], wordClicked: $wordsStates[3], onWordClick: wordClick)
-                        Word(text: viewModel.state(\.fiveWords)[4], wordClicked: $wordsStates[4], onWordClick: wordClick)
-                    }
-                }.fixedSize(horizontal: false, vertical: true)
-                Spacer()
+                    }.fixedSize(horizontal: false, vertical: true)
+                    Spacer()
+                }
+                .padding(16)
             }
-            .padding(16)
+            .onAppear {
+                if(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone) {
+                    playingTeamName = viewModel.teamOneName
+                } else {
+                    playingTeamName = viewModel.teamTwoName
+                }
+                viewModel.startTimer()
+            }
             .onReceive(createPublisher(viewModel.actions)) { action in
-                print("swift action")
+                let actionKs = GameViewModelActionKs(action)
+                switch(actionKs) {
+                case .roundFinished:
+                    print("round finished")
+                    mode.wrappedValue.dismiss()
+                    break
+                case .fiveWordsGuessed:
+                    wordsStates = wordsStates.map { _ in false }
+                    break
+                default:
+                    print("else")
+                    break
+                }
             }
         }
-        .onAppear {
-            viewModel.startTimer()
-        }
-//        .onReceive(createPublisher(viewModel.actions)) { action in
-//            print("swift action")
-//        }
     }
 }
 

@@ -3,9 +3,10 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     id("dev.icerock.mobile.multiplatform-resources")
+    id("dev.icerock.moko.kswift")
 }
 
-val mokoMvvmVersion = "0.13.0"
+val mokoMvvmVersion = "0.15.0"
 
 kotlin {
     android()
@@ -30,7 +31,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+//                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
+//                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
                 api("dev.icerock.moko:mvvm-core:$mokoMvvmVersion")
                 api("dev.icerock.moko:mvvm-flow:$mokoMvvmVersion")
                 api("dev.icerock.moko:resources:0.20.1")
@@ -84,4 +87,8 @@ android {
         minSdk = 21
         targetSdk = 33
     }
+}
+
+kswift {
+    install(dev.icerock.moko.kswift.plugin.feature.SealedToSwiftEnumFeature)
 }

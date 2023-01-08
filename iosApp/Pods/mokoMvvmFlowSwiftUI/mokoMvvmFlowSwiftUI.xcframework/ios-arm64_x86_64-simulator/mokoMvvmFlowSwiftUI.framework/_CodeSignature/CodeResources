@@ -4,56 +4,69 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Headers/mokoMvvmFlowSwiftUI-Swift.h</key>
-		<data>
-		4lLZpx0n+82L95l+GvDAd/LStoc=
-		</data>
 		<key>Headers/mokoMvvmFlowSwiftUI.h</key>
 		<data>
 		1T02OQYNocjw155x9jZVBp1hVV4=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		vr3u17Nf2b31YkmmExDpLJNoYlc=
+		ULZYx4CnO0nzj8jxw1TL6Mo/juk=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		yDzPC6r5kmmPRqQWChyjlgq141E=
+		nAXjnuTmgfd7ovgx57x1rWTiOlw=
 		</data>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		ARG89ROTggmz/KjFgUf7+mUBF3U=
+		7DFr3nFcgAFQfENDo1p6ukTyzqM=
 		</data>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		3lZMaXqO/5q+xKy8GjxWxJ3SVto=
+		a3KkA3cQP7nQR17VfQJwNIZCjcU=
 		</data>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		Z7egCtlciSPGpBbzM4mOnN7KZp8=
+		4dC97KgvhB4ICsp7Z3mPdpu1DbY=
+		</data>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64.swiftdoc</key>
+		<data>
+		7DFr3nFcgAFQfENDo1p6ukTyzqM=
+		</data>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64.swiftinterface</key>
+		<data>
+		a3KkA3cQP7nQR17VfQJwNIZCjcU=
+		</data>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64.swiftmodule</key>
+		<data>
+		4dC97KgvhB4ICsp7Z3mPdpu1DbY=
 		</data>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		DoMwnB9qgfxLRn1ipi3L5Vjxu18=
+		CMnL//TT4s7S9O8McDU2mUXKiLk=
 		</data>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		dP2urtiZlJg+ALRwW6wPg3LFqa0=
+		SmYk3PotuagMAwumYhXcSICBYe0=
 		</data>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		wIEmGeKTyKKviR1nuuB7gz+G4SY=
+		Nit9tH+Qz9S0RgziIhY2LNvw34U=
+		</data>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64.swiftdoc</key>
+		<data>
+		CMnL//TT4s7S9O8McDU2mUXKiLk=
+		</data>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64.swiftinterface</key>
+		<data>
+		SmYk3PotuagMAwumYhXcSICBYe0=
+		</data>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64.swiftmodule</key>
+		<data>
+		Nit9tH+Qz9S0RgziIhY2LNvw34U=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Headers/mokoMvvmFlowSwiftUI-Swift.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			0vNMO/MkUCZ/VE51v2wxgRNFflLD/shS7GJh4P6DRb8=
-			</data>
-		</dict>
 		<key>Headers/mokoMvvmFlowSwiftUI.h</key>
 		<dict>
 			<key>hash2</key>
@@ -65,49 +78,91 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			51w5qXrocsqM8yzwdwxsAYNsW96CG/5zvYy+iVaff7I=
+			H9HFFca/ssMqXKGAu8P/9xUfmNkFAxfd6VEXIDT/VyU=
 			</data>
 		</dict>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Mfh5DCqHWGJfEIL7KXtDkMDTKU3qiIzW1j15TVmBXWo=
+			H7/id65KxWZY7B4QbRfzuqyTe8IceA1OJGiLYZQKiq0=
 			</data>
 		</dict>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			o17uEpQu8syExzwNQVWpQC7XIwaRRvaAhX1pFxE2afY=
+			13ER+urjZZd0dm78/xvNOMa3lOUsc76JWB0BK4GYbMY=
 			</data>
 		</dict>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ua/xr+0sN3Rmo/pTXDzzYMFmV0b5492GkR3kFvcFbRs=
+			BsVQX/RFDMeraeqOI3TnO0f6IMF2cYoGAeJXIml7EbY=
+			</data>
+		</dict>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64.swiftdoc</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			H7/id65KxWZY7B4QbRfzuqyTe8IceA1OJGiLYZQKiq0=
+			</data>
+		</dict>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64.swiftinterface</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			13ER+urjZZd0dm78/xvNOMa3lOUsc76JWB0BK4GYbMY=
+			</data>
+		</dict>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/arm64.swiftmodule</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			BsVQX/RFDMeraeqOI3TnO0f6IMF2cYoGAeJXIml7EbY=
 			</data>
 		</dict>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			E0VeVAUlt0WwC6SLmnYTPagN4/KLhPl9rX8UlFpLjzk=
+			uyDzmjnVbhWW+HuuypsL8VKfiumfrRRlnJdA7hD+3Bc=
 			</data>
 		</dict>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			JMtG2Mom8luXeoTdfq7+uhc6T1V+F5z+4e26Cag82jw=
+			o24Z1Z4nRzHHpHPC4bJrW2cE0EaSaiWhE2si/uHr0Bk=
 			</data>
 		</dict>
 		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			dwjuR1gTU5J0nDzBJguRSYcTvLaEa1ZpMz26yEsXvCk=
+			F0qKQ/dHlW8IrcPbCOD+4hJH7xZgkam2SkDP2/LS09g=
+			</data>
+		</dict>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64.swiftdoc</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			uyDzmjnVbhWW+HuuypsL8VKfiumfrRRlnJdA7hD+3Bc=
+			</data>
+		</dict>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64.swiftinterface</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			o24Z1Z4nRzHHpHPC4bJrW2cE0EaSaiWhE2si/uHr0Bk=
+			</data>
+		</dict>
+		<key>Modules/mokoMvvmFlowSwiftUI.swiftmodule/x86_64.swiftmodule</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			F0qKQ/dHlW8IrcPbCOD+4hJH7xZgkam2SkDP2/LS09g=
 			</data>
 		</dict>
 	</dict>

@@ -34,6 +34,11 @@ class GameViewModel : ViewModel() {
         MutableStateFlow<List<String>>(listOf()).cMutableStateFlow()
     val fiveWords: CStateFlow<List<String>> = _fiveWords.cStateFlow()
 
+    // Stack words
+    private val _stackWords: MutableStateFlow<List<String>> =
+        MutableStateFlow<List<String>>(listOf()).cMutableStateFlow()
+    val stackWords: CStateFlow<List<String>> = _stackWords.cStateFlow()
+
     private val _actions = Channel<Action>(Channel.BUFFERED)
     val actions: CFlow<Action> get() = _actions.receiveAsFlow().cFlow()
 
@@ -68,7 +73,6 @@ class GameViewModel : ViewModel() {
                 if (guessedWordsCount == 4) {
                     guessedWordsCount = 0
                     rotateWords()
-                    getFiveWords()
                 } else {
                     guessedWordsCount++
                 }
@@ -77,10 +81,7 @@ class GameViewModel : ViewModel() {
                 rotateWords()
             }
             Gamemode.STACK -> {
-                index?.let {
-                    val word = words.value[index]
-                    _words.value = (words.value.plus(word)).minus(words.value[index])
-                }
+                rotateWords(index)
             }
         }
     }
@@ -121,8 +122,14 @@ class GameViewModel : ViewModel() {
     fun shuffleWords() {
         viewModelScope.launch {
             _words.value = words.value.shuffled()
-            if (gamemode == Gamemode.STANDARD) {
-                _fiveWords.emit(words.value.take(5))
+            when (gamemode) {
+                Gamemode.STANDARD -> {
+                    _fiveWords.emit(words.value.take(5))
+                }
+                Gamemode.STACK -> {
+                    _stackWords.emit(words.value.take(20))
+                }
+                else -> Unit
             }
         }
     }
@@ -133,23 +140,32 @@ class GameViewModel : ViewModel() {
     }
 
     fun pauseTimer() {
+        Logger.d { "pauseTimer" }
         timer.pauseTimer()
     }
 
     fun resumeTimer() {
+        Logger.d { "resumeTimer" }
         timer.continueTimer()
     }
 
     fun stopTimer() {
+        Logger.d { "stopTimer" }
         timer.stopTimer()
     }
 
-    private fun getFiveWords() {
+    private fun updateFiveWords() {
         viewModelScope.launch {
-            _fiveWords.emit(words.value.take(5))
+            _fiveWords.emit(words.value.take(STANDARD_GAMEMODE_WORD_COUNT))
             _actions.send(Action.FiveWordsGuessed).also {
                 Logger.d { "FiveWordsGuessed" }
             }
+        }
+    }
+
+    private fun updateStackWords() {
+        viewModelScope.launch {
+            _stackWords.emit(words.value.take(20))
         }
     }
 
@@ -185,7 +201,9 @@ class GameViewModel : ViewModel() {
     private fun timeFinished() {
         roundEnded()
         viewModelScope.launch {
-            _actions.send(Action.RoundFinished)
+            _actions.send(Action.RoundFinished).also {
+                Logger.d { "RoundFinished" }
+            }
         }
     }
 
@@ -220,26 +238,22 @@ class GameViewModel : ViewModel() {
         playingTeam = PlayingTeam.TeamOne
     }
 
-    fun rotateWords(wordsAmount: Int? = null) {
-        when (gamemode) {
-            Gamemode.STANDARD -> {
-                _words.value = (
-                    words.value.drop(STANDARD_GAMEMODE_WORD_COUNT) + words.value.take(
-                        STANDARD_GAMEMODE_WORD_COUNT
-                    )
-                    )
-            }
-            Gamemode.SWIPE -> {
-                _words.value = (
-                    words.value.drop(SWIPE_GAMEMODE_WORD_COUNT) + words.value.take(
-                        SWIPE_GAMEMODE_WORD_COUNT
-                    )
-                    )
-            }
-            Gamemode.STACK -> {
-                wordsAmount?.let {
-                    _words.value = (words.value.drop(it) + words.value.take(it))
-                }
+    fun rotateWords(index: Int? = null) = when (gamemode) {
+        Gamemode.STANDARD -> {
+            _words.value = (words.value.drop(STANDARD_GAMEMODE_WORD_COUNT) + words.value.take(STANDARD_GAMEMODE_WORD_COUNT))
+            updateFiveWords()
+        }
+        Gamemode.SWIPE -> {
+            _words.value = (words.value.drop(SWIPE_GAMEMODE_WORD_COUNT) + words.value.take(SWIPE_GAMEMODE_WORD_COUNT))
+        }
+        Gamemode.STACK -> {
+            if (index == null) {
+                _words.value = (words.value.drop(STACK_GAMEMODE_WORD_COUNT) + words.value.take(STACK_GAMEMODE_WORD_COUNT))
+            } else {
+                val tempList = words.value.toMutableList()
+                tempList.add(tempList.removeAt(index))
+                _words.value = tempList.toList()
+                updateStackWords()
             }
         }
     }
@@ -261,6 +275,7 @@ class GameViewModel : ViewModel() {
     companion object {
         const val STANDARD_GAMEMODE_WORD_COUNT = 5
         const val SWIPE_GAMEMODE_WORD_COUNT = 1
+        const val STACK_GAMEMODE_WORD_COUNT = 20 // THIS IS HARDCODE DUE THE FACT THAT I WAS UNABLE TO GET AMOUNT OF WORDS IN SWIFT UI
         const val PEOPLE =
             "Richard Nixon, Harry Potter, Kobe Bryant, Jesus, Boris Yeltsin, Roberto Carlos, Matt Damon, Marty McFly, Tarzan, Van Helsing, Martin Scorsese, Neo, Julius Caesar, Paul McCartney, Bashar al-Assad, Ali Khamenei, Charles Dickens, Vincent Van Gogh, Mel Gibson, Woody Harrelson, Hello Kitty, Joe Biden, Stephen Hawking, Yanni, Claudius, Vlad the Impaler, Jake Gyllenhaal, Cesc Fàbregas, Bear Grylls, Bryan Adams, Snoop Dogg, Lana Del Rey, Tim Burton, Nicolas Cage, Julius Ceasar, Arnold Schwarzenegger, Hercules, Tom, Lady Gaga, Vladimir Putin, Joaquin Phoenix, David Beckham, Saddam Hussein, Irina Shayk, Frank Lampard, Ernest Hemingway, Ice Cube, Bonnie Parker, Hillary Clinton, Inna, Mike Wazowski, Batman, Rihanna, Channing Tatum, Fernando Torres, Angelina Jolie, V (V For Vendetta), Gandhi, Sandro Botticelli, Katy Perry, Ethan Hunt, Bob Marley, Clyde Barrow, Zac Efron, Jane Austen, Ace Ventura, George R. R. Martin, Hermione Granger, Steve Carell, Jim Carrey, Eric Cartman, Laurence Fishburne, Jim Parsons, Sting, Will Smith, Tony Soprano, Bob Dylan, Muhammad Ali, Adam Sandler, Tupac Shakur, Chris Evans, Nikola Tesla, Paul Allen, Gary Oldman, Milla Jovovich, 50 Cent, Frank Sinatra, Kevin Hart, Mike Tyson, Danny Trejo, Rasputin, Queen Elizabeth II, John Cena, Yuri Gagarin, Mark Hamill, Kafka, Adam Smith, Jim Morrison, Andrés Iniesta, Gianni Versace, Jennifer Lopez, Marlon Wayans, Nicole Kidman, Mickey Mouse, Johnny Depp, Aristotle, Michael Bloomberg, Robert Downey Jr., Debby Ryan, Luciano Pavarotti, Scrooge McDuck, Paul Walker, Pluto, Omar Khayyam, Julianne Moore, Dumbledore, King Kong, Prince Philip, Jackie Chan, Jaden Smith, Adam Savage, Mao Zedong, Liam Hemsworth, Tim Cook, Emmett Brown, Bruce Lee, Robert Pattinson, Donald Trump, Carles Puyol, Benito Mussolini, Galileo Galilei, Enrique Iglesias, Will Ferrell, Karl Marx, Post Malone, Christina Aguilera, Alexandra Daddario, Warren Buffett, Charles Darwin, will.i.am, Nicolaus Copernicus, Leonardo DiCaprio, Dory, Walter White, Lil Wayne, Richard Branson, Christian Bale, Andrea Pirlo, Dan Bilzerian, Bach, Wayne Rooney, Baymax, Billie Eilish, Deadpool, Pablo Escobar, Maluma, Skrillex, Luke Skywalker, Henry Ford, Fred Flintstone, Buddha, Alexander Graham Bell, Immanuel Kant, Macklemore, Jessie J, Beyoncé, Chopin, Cameron Diaz, Mark Twain, Chris Rock, Jimmy Fallon, Neil deGrasse Tyson, Harrison Ford, Severus Snape, Celine Dion, Marco Polo, Mikhail Gorbachev, John Travolta, Daniel Radcliffe, Gwen Stefani, Al Capone, Wolfgang Amadeus Mozart, Clark Gable, Richard Hammond, Zayn Malik, Andy Warhol, Novak Djokovic, Kesha, Lionel Messi, Rick Ross, Tony Hawk, Salma Hayek, Conor McGregor, Dracula, Elvis Presley, Marilyn Monroe, Rowan Atkinson, Michael J. Fox, Sean Paul, Xavi, Theodore Roosevelt, Dwayne Johnson, Meghan Trainor, Benjamin Franklin, Mark Zuckerberg, Clint Eastwood, Mario Götze, Frank Abagnale, Dana White, Mario, Selena Gomez, Coco Chanel, Mark Wahlberg, Sergey Brin, Freddy Krueger, Joker, Sheriff Woody, Usain Bolt, Sebastian Vettel, PSY, Freddie Highmore, Tiger Woods, XXXTentacion, Jay Z, Angela Merkel, Roger Federer, Casper, Marshmello, Hugh Hefner, Mario Gómez, Bill Clinton, Keanu Reeves, Larry Page, Nefertiti, Pink, Steven Seagal, Black Widow, Kylie Jenner, Britney Spears, Gandalf, William Shakespeare, David Copperfield, Isaac Newton, Lord Voldemort, Eminem, Gal Gadot, Bill Gates, Kermit the Frog, Peter Pan, Frankensteins Monster, Cardi B, Gordon Ramsay, Alfred Hitchcock, Martin Lawrence, Andrew Jackson, Gerard Piqué, Thomas Edison, Sandra Bullock, Genghis Khan, Christopher Lloyd, Donald Glover, Mark Webber, Barbie, Nicki Minaj, Jason Voorhees, Hellboy, Nicholas II, Christopher Nolan, Queen Elizabeth I, Woodrow Wilson, Cleopatra, Justin Trudeau, Captain America, Steve Jobs, Zorro, Samuel L. Jackson, Ronaldinho, Nemo, The Flash, Shakira, Wiz Khalifa, Rami Malek, Godzilla, Zlatan Ibrahimović, Radamel Falcao, R2-D2, Tyga, Shawn Mendes, John Locke, Cara Delevingne, David Luiz, Scarlett Johansson, Elizabeth Taylor, Stevie Wonder, Shrek, Natalie Portman, Donald Duck, Mark Ruffalo, Elton John, Leonid Brezhnev, Ray Charles, Donatello, Nelson Mandela, Roman Abramovich, Malcolm X, Optimus Prime, Kevin James, M.I.A., Buzz Lightyear, Mila Kunis, Usher, Pablo Picasso, Penelope Cruz, Martin Luther King, Frida Kahlo, Stephen King, Oprah Winfrey, Groot, Eazy-E, Barack Obama, Jared Leto, Tom Hardy, Shania Twain, Homer Simpson, Kim Jong-un, Shaquille ONeal, Bill Murray, Tiberius, Han Solo, Steven Spielberg, George Soros, Alex Ferguson, Dua Lipa, George Bush, Plato, Gianluigi Buffon, Raphael, Chris Hemsworth, Jay-Z, Ryan Reynolds, Zendaya, Taylor Swift, Ivan the Terrible, Kurt Cobain, Bruce Willis, Jeff Bezos, Uma Thurman, Ángel Di María, Serena Williams, Calvin Harris, Tyra Banks, Julia Roberts, Justin Bieber, Busta Rhymes, Joseph Stalin, Martin Freeman, Yoda, Diego Armando Maradona, Archimedes, Elsa, Ted, O. J. Simpson, Floyd Mayweather, Vito Corleone, Chris Brown, Michelangelo, Bambi, Jason Derulo, Charlie Chaplin, Kim Kardashian, Hugh Jackman, Robert Lewandowski, Thor, Edward Scissorhands, Future (rapper), Catwoman, Bradley Cooper, Wonder Woman, Demi Lovato, Eddie Murphy, Pitbull, Nero, Caligula, Quentin Tarantino, Buzz Aldrin, Winnie-the-Pooh, Michael Bay, Che Guevara, Kaley Cuoco, Elizabeth Olsen, Amy Winehouse, Jay Gatsby, Michel Teló, Justin Timberlake, Ariana Grande, Chip and Dale, Carl Sagan, John D. Rockefeller, Tom Hanks, Victor Hugo, Nikita Khrushchev, Ramses II, Emma Watson, Garry Kasparov, Jon Snow, George Washington, Christoph Waltz, Luis Fonsi, Hans Christian Andersen, Dalai Lama, Marie Antoinette, Marlon Brando, Alain Delon, The Pink Panther, Rafael Nadal, George Clooney, Pikachu, John F. Kennedy, Abraham Lincoln, Jensen Ackles, Christopher Columbus, Genie, Margot Robbie, Julio Iglesias, Cinderella, Mother Teresa, Liam Neeson, Captain Jack Sparrow, Leo Tolstoy, James Franco, Chloe Grace Moretz, Maximus, Mario Balotelli, Nicolas Sarkozy, Rocky Balboa, Goofy, Manuel Neuer, Jerry, Margaret Thatcher, Michael Jordan, Brad Pitt, Antonio Banderas, Robin Hood, Ryan Gosling, Robert De Niro, Emma Stone, Jason Statham, Arsène Wenger, Audrey Hepburn, Adolf Hitler, Jürgen Klopp, Wesley Snipes, Sarah Connor, LeBron James, John Legend, Maria Sharapova, Johan Cruyff, Jean-Jacques Rousseau, Akon, Louis Armstrong, Ed Sheeran, Miley Cyrus, The Grinch, Nick Jonas, Ben Affleck, Trajan, Pope Francis, Teenage Mutant Ninja Turtles, José Mourinho, Wall-E, James Bond, Elon Musk, J.K. Rowling, Goku, Alexander Pushkin, Elijah Wood, Wolverine, Agatha Christie, The Notorious B.I.G., Ellen Degeneres, Al Pacino, Socrates, David Guetta, Madonna, Willem Dafoe, Alfred Nobel, Kristen Stewart, Owen Wilson, Otto von Bismarck, Amelia Earhart, Michelle Rodriguez, Daniel Craig, Sonic the Hedgehog, Freddie Mercury, Forest Whitaker, Albert Enstein, Walt Disney, Beatrix Kiddo, David Bowie, Ne-Yo, Doctor Evil, Ludacris, Heath Ledger, Katniss Everdeen, Kate Winslet, Olaf, The Hulk, Tony Montana, Princess Diana, Billy Ray Cyrus, Keira Knightley, Edvard Munch, Leonardo Da Vinci, Chuck Berry, Augustus, Joan of Arc, Fidel Castro, Marilyn Manson, Rene Descartes, Lenin, Orlando Bloom, Napoleon Bonaparte, Ariel, Avril Lavigne, Alexander Hamilton, Serj Tankian, Paul Pogba, Johnny Galecki, Neymar, Santa Claus, George Orwell, Kanye West, Kevin Spacey, Prince Charles, Charlie Puth, Macaulay Culkin, Ronald Reagan, Tobey Maguire, Winston Churchill, Thomas Jefferson, Scooby-Doo, Sophocles, Lewis Hamilton, Osama Bin Laden, Travis Scott, John Lennon, Forrest Gump, Mahmoud Ahmadinejad, Peter Griffin, Neil Armstrong, Antonio Vivaldi, Stan Lee, Chuck Norris, Tom Cruise, Marie Curie, Megan Fox, Vasco Da Gama, Bugs Bunny, Pharrell Williams, J Balvin, Jony Ive, Andrea Bocelli, Jennifer Aniston, The Penguins of Madagascar, Hannibal Lecter, Obi-Wan Kenobi, Edgar Allan Poe, Cher, Ludwig van Beethoven, Confucius, Jack Black, MC Hammer, Minions, Whitney Houston, Barry White, Morgan Freeman, James Cameron, Vin Diesel, Kazimir Malevich, Michael Jackson, Leon Trotsky, Professor Moriarty, Zoey Deutch, Avicii, Tutankhamun, Dani Alves, SpongeBob SquarePants, Dr. Dre, The Weeknd, Pythagoras, Spiderman, Rembrandt, Etta James, Homer, Pele, Gabriel García Márquez, Gareth Bale, Jennifer Lawrence, Doctor Strange, Spock, Dumbo, Cruella De Vil, Sherlock Holmes, Ronald McDonald, Tony Stark (Iron Man), Larry King, Pac-Man, Darth Vader, Rita Ora, Pamela Anderson, Pocahontas, Cristiano Ronaldo, Muammar Gaddafi, Anne Hathaway, Sigmund Freud, Benedict Cumberbatch, Drake, Franklin D. Roosevelt, Popeye, Sylvester Stallone, Catherine OHara, Bruno Mars, Oscar Wilde, Indiana Jones, The Terminator, Superman, Queen Victoria, Camila Cabello, Adele, Claude Monet, Alexander III of Macedon, Salvador Dalí, Knaan, Naomi Campbell, Jeremy Clarkson, Giordano Bruno, Aladdin"
         const val WORDS =

@@ -1,0 +1,6 @@
+framework module MultiPlatformLibrarySwift {
+  umbrella header "sharedSwift-umbrella.h"
+
+  export *
+  module * { export * }
+}

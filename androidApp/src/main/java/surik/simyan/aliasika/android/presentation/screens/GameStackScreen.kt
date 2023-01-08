@@ -42,7 +42,7 @@ fun GameStackScreen(navController: NavHostController, viewModel: GameViewModel) 
         playingTeamScore = viewModel.teamTwoScore.collectAsState()
     }
     val remainingTime by viewModel.remainingTime.collectAsState()
-    val words by viewModel.words.collectAsState()
+    val words by viewModel.stackWords.collectAsState()
 
     val wordClick: (Int) -> Unit = { index ->
         viewModel.wordGuessed(index)
@@ -50,7 +50,7 @@ fun GameStackScreen(navController: NavHostController, viewModel: GameViewModel) 
 
     viewModel.actions.observeAsActions { action ->
         if (action is GameViewModel.Action.RoundFinished) {
-            viewModel.rotateWords(visibleItemsInfo.value)
+            viewModel.rotateWords()
             navController.navigateUp()
         }
     }
