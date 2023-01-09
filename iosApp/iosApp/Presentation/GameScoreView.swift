@@ -1,12 +1,17 @@
 import SwiftUI
 import MultiPlatformLibrary
+import MultiPlatformLibrarySwift
+import mokoMvvmFlowSwiftUI
+import Combine
 
 struct GameScoreView: View {
+    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     private var viewModel: GameViewModel
+    private var isShowing = true
     @State private var showAlertDialog = false
     @State private var teamOneScore = 0
     @State private var teamTwoScore = 0
-
+    
     
     init(viewModel: GameViewModel) {
         self.viewModel = viewModel
@@ -59,6 +64,34 @@ struct GameScoreView: View {
             .onAppear {
                 teamOneScore = viewModel.teamOneScore.value!.intValue
                 teamTwoScore = viewModel.teamTwoScore.value!.intValue
+            }
+        }
+        .onDisappear {
+            viewModel
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action : {
+            showAlertDialog = true
+        }){
+            Image(systemName: "arrow.left")
+        })
+        .alert(isPresented: $showAlertDialog) {
+            Alert(
+                title: Text(SharedStrings.shared.gameFinishTitle.localized()),
+                message: Text(SharedStrings.shared.gameFinishMessage.localized()),
+                primaryButton: Alert.Button.default(Text(SharedStrings.shared.gameFinishPositive.localized()), action: { viewModel.endGameEarly() }),
+                secondaryButton: .cancel(Text(SharedStrings.shared.gameFinishNegative.localized())))
+        }
+        .onReceive(createPublisher(viewModel.actions)) { action in
+            let actionKs = GameViewModelActionKs(action)
+            switch(actionKs) {
+            case .gameEnded:
+                print("game ended")
+                break
+            default:
+                print("score")
+                print(actionKs)
+                break
             }
         }
     }

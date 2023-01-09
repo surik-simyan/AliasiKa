@@ -6,7 +6,7 @@ import Combine
 
 struct GameStandardView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
-    @State private var showingAlert = false
+    @State private var showAlertDialog = false
     @ObservedObject private var viewModel: GameViewModel
     @State private var wordsStates = [false, false, false, false, false]
     @State private var playingTeamName: String = ""
@@ -80,6 +80,20 @@ struct GameStandardView: View {
                 }
                 viewModel.startTimer()
             }
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(leading: Button(action : {
+                viewModel.pauseTimer()
+                showAlertDialog = true
+            }){
+                Image(systemName: "arrow.left")
+            })
+            .alert(isPresented: $showAlertDialog) {
+                Alert(
+                    title: Text(SharedStrings.shared.gameFinishRoundTitle.localized()),
+                    message: Text(SharedStrings.shared.gameFinishRoundMessage.localized()),
+                    primaryButton: Alert.Button.default(Text(SharedStrings.shared.gameFinishPositive.localized()), action: { viewModel.finishRoundEarly() }),
+                    secondaryButton: .cancel(Text(SharedStrings.shared.gameFinishNegative.localized())))
+            }
             .onReceive(createPublisher(viewModel.actions)) { action in
                 let actionKs = GameViewModelActionKs(action)
                 switch(actionKs) {
@@ -91,7 +105,8 @@ struct GameStandardView: View {
                     wordsStates = wordsStates.map { _ in false }
                     break
                 default:
-                    print("else")
+                    print("standard")
+                    print(actionKs)
                     break
                 }
             }

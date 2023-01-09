@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030AB7F1296C3D0D000E6CD1 /* GameWinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030AB7F0296C3D0D000E6CD1 /* GameWinnerView.swift */; };
 		0321F0BE2965850F00F4D481 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321F0AF2965850E00F4D481 /* View.swift */; };
 		0321F0C02965850F00F4D481 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321F0B12965850E00F4D481 /* UIColor.swift */; };
 		0321F0C12965850F00F4D481 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321F0B22965850E00F4D481 /* CGFloat.swift */; };
@@ -26,7 +27,6 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
-		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,6 +44,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		030AB7F0296C3D0D000E6CD1 /* GameWinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWinnerView.swift; sourceTree = "<group>"; };
 		0321F0AF2965850E00F4D481 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		0321F0B12965850E00F4D481 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		0321F0B22965850E00F4D481 /* CGFloat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
@@ -66,7 +67,6 @@
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		62237096E9E3F374DA0BA2D4 /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +101,7 @@
 				0321F0BA2965850E00F4D481 /* GameStackView.swift */,
 				0321F0BC2965850E00F4D481 /* GameStandardView.swift */,
 				0321F0B42965850E00F4D481 /* GameSwipeView.swift */,
+				030AB7F0296C3D0D000E6CD1 /* GameWinnerView.swift */,
 				0321F0B82965850E00F4D481 /* HomeView.swift */,
 				0321F0BB2965850E00F4D481 /* PointsView.swift */,
 				0321F0B62965850E00F4D481 /* TeamsView.swift */,
@@ -159,7 +160,6 @@
 				0321F0AE2965850E00F4D481 /* Util */,
 				0321F0B32965850E00F4D481 /* Presentation */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
-				7555FF82242A565900829871 /* ContentView.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
@@ -298,9 +298,9 @@
 				0321F0CA2965850F00F4D481 /* GameStandardView.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				0321F0C22965850F00F4D481 /* GameSwipeView.swift in Sources */,
+				030AB7F1296C3D0D000E6CD1 /* GameWinnerView.swift in Sources */,
 				0321F0C62965850F00F4D481 /* HomeView.swift in Sources */,
 				0321F0C52965850F00F4D481 /* GamemodeView.swift in Sources */,
-				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				0321F0BE2965850F00F4D481 /* View.swift in Sources */,
 				0321F0C32965850F00F4D481 /* CardView.swift in Sources */,
 				036C2A442966DB0000A07C24 /* CardViewWithPadding.swift in Sources */,

@@ -8,6 +8,7 @@ import Combine
 struct GameStackView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @ObservedObject private var viewModel: GameViewModel
+    @State private var showAlertDialog = false
     private var wordClick: (Int32) -> Void
     @State private var playingTeamName: String = ""
     
@@ -73,6 +74,20 @@ struct GameStackView: View {
                 playingTeamName = viewModel.teamTwoName
             }
             viewModel.startTimer()
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action : {
+            viewModel.pauseTimer()
+            showAlertDialog = true
+        }){
+            Image(systemName: "arrow.left")
+        })
+        .alert(isPresented: $showAlertDialog) {
+            Alert(
+                title: Text(SharedStrings.shared.gameFinishRoundTitle.localized()),
+                message: Text(SharedStrings.shared.gameFinishRoundMessage.localized()),
+                primaryButton: Alert.Button.default(Text(SharedStrings.shared.gameFinishPositive.localized()), action: { viewModel.finishRoundEarly() }),
+                secondaryButton: .cancel(Text(SharedStrings.shared.gameFinishNegative.localized())))
         }
         .onReceive(createPublisher(viewModel.actions)) { action in
             let actionKs = GameViewModelActionKs(action)
