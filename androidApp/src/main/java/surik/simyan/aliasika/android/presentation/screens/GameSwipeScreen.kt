@@ -17,29 +17,18 @@ import com.github.theapache64.twyper.SwipedOutDirection
 import com.github.theapache64.twyper.Twyper
 import com.github.theapache64.twyper.rememberTwyperController
 import dev.icerock.moko.mvvm.flow.compose.observeAsActions
-import surik.simyan.aliasika.GameViewModel
+import org.koin.androidx.compose.get
 import surik.simyan.aliasika.SharedStrings
-import surik.simyan.aliasika.presentation.RightButton
-import surik.simyan.aliasika.presentation.WrongButton
+import surik.simyan.aliasika.presentation.*
 
 @Composable
-fun GameSwipeScreen(navController: NavHostController, viewModel: GameViewModel) {
+fun GameSwipeScreen(navController: NavHostController, viewModel: SwipeGameViewModel = get()) {
     val context = LocalContext.current
-
-    val playingTeamName: String
-    val playingTeamScore: State<Int>
+    val playingTeamScore: State<Int> = viewModel.score.collectAsState()
     var showAlertDialog by remember { mutableStateOf(false) }
     val twyperController = rememberTwyperController()
-
-    if (viewModel.playingTeam == GameViewModel.PlayingTeam.TeamOne) {
-        playingTeamName = viewModel.teamOneName
-        playingTeamScore = viewModel.teamOneScore.collectAsState()
-    } else {
-        playingTeamName = viewModel.teamTwoName
-        playingTeamScore = viewModel.teamTwoScore.collectAsState()
-    }
     val remainingTime by viewModel.remainingTime.collectAsState()
-    val words by viewModel.words.collectAsState()
+    val words by viewModel.swipeWords.collectAsState()
 
     val wordSwipe: (String, SwipedOutDirection) -> Unit = { _, direction ->
         if (direction == SwipedOutDirection.RIGHT) {
@@ -50,7 +39,7 @@ fun GameSwipeScreen(navController: NavHostController, viewModel: GameViewModel) 
     }
 
     viewModel.actions.observeAsActions { action ->
-        if (action is GameViewModel.Action.RoundFinished) {
+        if (action is AbstractGameViewModel.Action.RoundFinished) {
             viewModel.rotateWords()
             navController.navigateUp()
         }
@@ -102,7 +91,7 @@ fun GameSwipeScreen(navController: NavHostController, viewModel: GameViewModel) 
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            playingTeamName,
+                            viewModel.playingTeamName,
                             fontWeight = FontWeight.Normal,
                             fontSize = 24.sp
                         )

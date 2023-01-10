@@ -2,14 +2,10 @@ import SwiftUI
 import MultiPlatformLibrary
 
 struct TeamsView: View {
-    private var viewModel: GameViewModel
+    private var viewModel = MainViewModelHelper().mainViewModel
     @State private var teamOne: String = ""
     @State private var teamTwo: String = ""
     @State private var teamsNamed = false
-    
-    init(viewModel: GameViewModel) {
-        self.viewModel = viewModel
-    }
     
     var body: some View {
         VStack (spacing: 20) {
@@ -25,7 +21,7 @@ struct TeamsView: View {
             TextField("Team Two", text: $teamTwo)
                 .padding(.horizontal)
                 .textFieldStyle(.roundedBorder)
-            NavigationLink(destination: GameScoreView(viewModel: self.viewModel), isActive: $teamsNamed) {
+            NavigationLink(destination: GameScoreView(), isActive: $teamsNamed) {
                 Button(action: {
                     if(teamOne.isEmpty) {
                         viewModel.teamOneName = SharedStrings.shared.playTeamOne.localized()
@@ -37,7 +33,6 @@ struct TeamsView: View {
                     } else {
                         viewModel.teamTwoName = teamTwo
                     }
-                    viewModel.shuffleWords()
                     teamsNamed = true
                 }) {
                     Text(SharedStrings.shared.playStartGame.localized())
@@ -49,11 +44,5 @@ struct TeamsView: View {
                 .cornerRadius(CGFloat.dp(value: 4))
             }
         }
-    }
-}
-
-struct TeamsView_Previews: PreviewProvider {
-    static var previews: some View {
-        TeamsView(viewModel: GameViewModel())
     }
 }

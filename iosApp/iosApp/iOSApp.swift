@@ -7,13 +7,12 @@ struct iOSApp: App {
         HelperKt.doInitKoin()
     }
     
-    private let viewModel = GameViewModelHelper().getViewModel()
-    @State private var showPageView = true
+    @State var isActive : Bool = false
     
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                HomeView(viewModel: viewModel)
+                HomeView(rootIsActive: self.$isActive)
             }
             .accentColor(Color(UIColor.onSurface))
         }

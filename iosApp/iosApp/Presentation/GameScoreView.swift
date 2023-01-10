@@ -6,17 +6,17 @@ import Combine
 
 struct GameScoreView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
-    private var viewModel: GameViewModel
+    private var viewModel = MainViewModelHelper().mainViewModel
     private var isShowing = true
+    @State private var isGameEnded = false
     @State private var showAlertDialog = false
     @State private var teamOneScore = 0
     @State private var teamTwoScore = 0
     
     
-    init(viewModel: GameViewModel) {
-        self.viewModel = viewModel
-        teamOneScore = viewModel.teamOneScore.value!.intValue
-        teamTwoScore = viewModel.teamTwoScore.value!.intValue
+    init() {
+        teamOneScore = Int(viewModel.teamOneScore)
+        teamTwoScore = Int(viewModel.teamTwoScore)
     }
     
     
@@ -24,6 +24,10 @@ struct GameScoreView: View {
         ZStack {
             Color(UIColor.secondary)
                 .ignoresSafeArea()
+            
+            NavigationLink(destination: NavigationLazyView(GameWinnerView()), isActive: $isGameEnded) {
+                
+            }
             
             VStack(alignment: .leading) {
                 CardViewWithPadding {
@@ -46,10 +50,10 @@ struct GameScoreView: View {
                     }
                 }.fixedSize(horizontal: false, vertical: true)
                 Spacer()
-                NavigationLink(destination: getDestination(from: viewModel.gamemode)) {
+                NavigationLink(destination: NavigationLazyView(getDestination(from: viewModel.gamemode))) {
                     CardViewWithPadding {
                         VStack{
-                            Text(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone ? viewModel.teamOneName : viewModel.teamTwoName)
+                            Text(viewModel.playingTeamName())
                                 .font(.system(size: 48))
                             Text(SharedStrings.shared.gameStart.localized())
                                 .font(.system(size: 48, weight: .bold))
@@ -62,12 +66,10 @@ struct GameScoreView: View {
             }
             .padding(16)
             .onAppear {
-                teamOneScore = viewModel.teamOneScore.value!.intValue
-                teamTwoScore = viewModel.teamTwoScore.value!.intValue
+                teamOneScore = Int(viewModel.teamOneScore)
+                teamTwoScore = Int(viewModel.teamTwoScore)
+                isGameEnded = viewModel.isGameEnded()
             }
-        }
-        .onDisappear {
-            viewModel
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action : {
@@ -79,39 +81,24 @@ struct GameScoreView: View {
             Alert(
                 title: Text(SharedStrings.shared.gameFinishTitle.localized()),
                 message: Text(SharedStrings.shared.gameFinishMessage.localized()),
-                primaryButton: Alert.Button.default(Text(SharedStrings.shared.gameFinishPositive.localized()), action: { viewModel.endGameEarly() }),
+                primaryButton: Alert.Button.default(Text(SharedStrings.shared.gameFinishPositive.localized()), action: {
+                    viewModel.endGameEarly()
+                    isGameEnded = true
+                }),
                 secondaryButton: .cancel(Text(SharedStrings.shared.gameFinishNegative.localized())))
-        }
-        .onReceive(createPublisher(viewModel.actions)) { action in
-            let actionKs = GameViewModelActionKs(action)
-            switch(actionKs) {
-            case .gameEnded:
-                print("game ended")
-                break
-            default:
-                print("score")
-                print(actionKs)
-                break
-            }
         }
     }
     
-    func getDestination(from gamemode: GameViewModel.Gamemode) -> AnyView {
+    func getDestination(from gamemode: MainViewModel.Gamemode) -> AnyView {
         switch gamemode {
         case .standard:
-            return AnyView(GameStandardView(viewModel: self.viewModel))
+            return AnyView(GameStandardView())
         case .swipe:
-            return AnyView(GameSwipeView(viewModel: self.viewModel))
+            return AnyView(GameSwipeView())
         case .stack:
-            return AnyView(GameStackView(viewModel: self.viewModel))
+            return AnyView(GameStackView())
         default:
-            return AnyView(GameStandardView(viewModel: self.viewModel))
+            return AnyView(GameStandardView())
         }
-    }
-}
-
-struct GameScoreView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameScoreView(viewModel: GameViewModel())
     }
 }

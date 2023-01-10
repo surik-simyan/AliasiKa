@@ -19,12 +19,14 @@ import com.sd.lib.compose.wheel_picker.FVerticalWheelPicker
 import com.sd.lib.compose.wheel_picker.FWheelPickerFocusVertical
 import com.sd.lib.compose.wheel_picker.rememberFWheelPickerState
 import kotlinx.coroutines.delay
-import surik.simyan.aliasika.GameViewModel
+import org.koin.androidx.compose.get
+import surik.simyan.aliasika.presentation.MainViewModel
 import surik.simyan.aliasika.SharedStrings
 
 @Composable
-fun PointsScreen(navController: NavHostController, viewModel: GameViewModel) {
+fun PointsScreen(navController: NavHostController) {
     val context = LocalContext.current
+    val viewModel = get<MainViewModel>()
     val pointsRange = (5..155).step(5).toList()
     var pickerValue by remember { mutableStateOf(pointsRange[19]) }
     val state = rememberFWheelPickerState(19)

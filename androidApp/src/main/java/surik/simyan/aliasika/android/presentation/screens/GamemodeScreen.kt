@@ -16,12 +16,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.sd.lib.compose.wheel_picker.FVerticalWheelPicker
 import com.sd.lib.compose.wheel_picker.FWheelPickerFocusVertical
-import surik.simyan.aliasika.GameViewModel
+import org.koin.androidx.compose.get
+import surik.simyan.aliasika.presentation.MainViewModel
 import surik.simyan.aliasika.SharedStrings
 
 @Composable
-fun GamemodeScreen(navController: NavHostController, viewModel: GameViewModel) {
+fun GamemodeScreen(navController: NavHostController) {
     val context = LocalContext.current
+    val viewModel = get<MainViewModel>()
     val gamemodeRange = mutableListOf(
         SharedStrings.gamemodeStandard.toString(context),
         SharedStrings.gamemodeSwipe.toString(context),
@@ -69,10 +71,10 @@ fun GamemodeScreen(navController: NavHostController, viewModel: GameViewModel) {
         Button(
             onClick = {
                 viewModel.gamemode = when (pickerValue) {
-                    gamemodeRange[0] -> GameViewModel.Gamemode.STANDARD
-                    gamemodeRange[1] -> GameViewModel.Gamemode.SWIPE
-                    gamemodeRange[2] -> GameViewModel.Gamemode.STACK
-                    else -> GameViewModel.Gamemode.STANDARD
+                    gamemodeRange[0] -> MainViewModel.Gamemode.STANDARD
+                    gamemodeRange[1] -> MainViewModel.Gamemode.SWIPE
+                    gamemodeRange[2] -> MainViewModel.Gamemode.STACK
+                    else -> MainViewModel.Gamemode.STANDARD
                 }
                 navController.navigate("points")
             },

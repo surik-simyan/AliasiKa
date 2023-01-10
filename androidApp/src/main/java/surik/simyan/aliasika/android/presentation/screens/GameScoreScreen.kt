@@ -13,36 +13,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import dev.icerock.moko.mvvm.flow.compose.observeAsActions
-import surik.simyan.aliasika.GameViewModel
+import org.koin.androidx.compose.get
 import surik.simyan.aliasika.SharedStrings
+import surik.simyan.aliasika.presentation.MainViewModel
 
 @Composable
-fun GameScoreScreen(navController: NavHostController, viewModel: GameViewModel) {
+fun GameScoreScreen(navController: NavHostController) {
     val context = LocalContext.current
-    val teamOnePoints: Int by viewModel.teamOneScore.collectAsState()
-    val teamTwoPoints: Int by viewModel.teamTwoScore.collectAsState()
+    val viewModel = get<MainViewModel>()
     var showAlertDialog by remember { mutableStateOf(false) }
 
-    viewModel.actions.observeAsActions { action ->
-        if (action is GameViewModel.Action.GameEnded) {
-            navController.navigate("winner") {
-                popUpTo("home") {
-                    inclusive = true
-                }
+    if (viewModel.isGameEnded()) {
+        navController.navigate("winner") {
+            popUpTo("home") {
+                inclusive = true
             }
         }
     }
 
     BackHandler {
-        if (teamOnePoints > 0 || teamTwoPoints > 0) {
+        if (viewModel.teamOneScore > 0 || viewModel.teamTwoScore > 0) {
             showAlertDialog = true
         } else {
             Log.d("BackScore", "Score navigateUp")
             navController.navigateUp()
         }
     }
-
     if (showAlertDialog) {
         AlertDialog(
             onDismissRequest = {
@@ -86,7 +82,7 @@ fun GameScoreScreen(navController: NavHostController, viewModel: GameViewModel) 
                             fontSize = 24.sp
                         )
                         Text(
-                            teamOnePoints.toString(),
+                            viewModel.teamOneScore.toString(),
                             fontWeight = FontWeight.Bold,
                             fontSize = 32.sp
                         )
@@ -102,7 +98,7 @@ fun GameScoreScreen(navController: NavHostController, viewModel: GameViewModel) 
                             fontSize = 24.sp
                         )
                         Text(
-                            teamTwoPoints.toString(),
+                            viewModel.teamTwoScore.toString(),
                             fontWeight = FontWeight.Bold,
                             fontSize = 32.sp
                         )
@@ -112,11 +108,10 @@ fun GameScoreScreen(navController: NavHostController, viewModel: GameViewModel) 
             Card(
                 modifier = Modifier.align(Alignment.Center).clickable {
                     when (viewModel.gamemode) {
-                        GameViewModel.Gamemode.STANDARD -> navController.navigate("standard")
-                        GameViewModel.Gamemode.SWIPE -> navController.navigate("swipe")
-                        GameViewModel.Gamemode.STACK -> navController.navigate("stack")
+                        MainViewModel.Gamemode.STANDARD -> navController.navigate("standard")
+                        MainViewModel.Gamemode.SWIPE -> navController.navigate("swipe")
+                        MainViewModel.Gamemode.STACK -> navController.navigate("stack")
                     }
-                    viewModel.startTimer()
                 },
                 shape = MaterialTheme.shapes.medium
             ) {
@@ -126,7 +121,7 @@ fun GameScoreScreen(navController: NavHostController, viewModel: GameViewModel) 
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        if (viewModel.playingTeam == GameViewModel.PlayingTeam.TeamOne) viewModel.teamOneName else viewModel.teamTwoName,
+                        viewModel.playingTeamName(),
                         fontWeight = FontWeight.Normal,
                         fontSize = 48.sp
                     )

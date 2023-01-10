@@ -2,14 +2,10 @@ import SwiftUI
 import MultiPlatformLibrary
 
 struct TimeView: View {
-    private var viewModel: GameViewModel
+    private var viewModel = MainViewModelHelper().mainViewModel
     private var time = stride(from: 20, to: 121, by: 5).map { $0 }
     @State private var selectedTime = 45
     @State private var pointsSelected = false
-    
-    init(viewModel: GameViewModel) {
-        self.viewModel = viewModel
-    }
     
     var body: some View {
         VStack (spacing: 20) {
@@ -27,7 +23,7 @@ struct TimeView: View {
             .scaledToFit()
             .pickerStyle(.wheel)
             .padding(.vertical, -20)
-            NavigationLink(destination: TeamsView(viewModel: self.viewModel), isActive: $pointsSelected) {
+            NavigationLink(destination: TeamsView(), isActive: $pointsSelected) {
                 Button(action: {
                     viewModel.time = Float(selectedTime)
                     pointsSelected = true
@@ -44,8 +40,3 @@ struct TimeView: View {
     }
 }
 
-struct TimeView_Previews: PreviewProvider {
-    static var previews: some View {
-        TimeView(viewModel: GameViewModel())
-    }
-}

@@ -3,15 +3,16 @@ import MultiPlatformLibrary
 
 struct GamemodeView: View {
     
-    private var viewModel: GameViewModel
-    private let strengths = ["Standard", "Swipe", "Stack"]
+    private var viewModel = MainViewModelHelper().mainViewModel
+    private let strengths = [
+        SharedStrings.shared.gamemodeStandard.localized(),
+        SharedStrings.shared.gamemodeSwipe.localized(),
+        SharedStrings.shared.gamemodeStack.localized(),
+    ]
     
-    @State private var selectedStrength = "Standard"
+    @State private var selectedStrength = SharedStrings.shared.gamemodeStandard.localized()
     @State private var gamemodeSelected = false
     
-    init(viewModel: GameViewModel) {
-        self.viewModel = viewModel
-    }
     
     var body: some View {
         VStack (spacing: 20) {
@@ -29,20 +30,20 @@ struct GamemodeView: View {
             .scaledToFit()
             .pickerStyle(.wheel)
             .padding(.vertical, -20)
-            NavigationLink(destination: PointsView(viewModel: self.viewModel), isActive: $gamemodeSelected) {
+            NavigationLink(destination: PointsView(), isActive: $gamemodeSelected) {
                 Button(action: {
                     switch selectedStrength {
-                    case "Standard":
-                        viewModel.gamemode = GameViewModel.Gamemode.standard
+                    case SharedStrings.shared.gamemodeStandard.localized():
+                        viewModel.gamemode = MainViewModel.Gamemode.standard
                         break
-                    case "Swipe":
-                        viewModel.gamemode = GameViewModel.Gamemode.swipe
+                    case SharedStrings.shared.gamemodeSwipe.localized():
+                        viewModel.gamemode = MainViewModel.Gamemode.swipe
                         break
-                    case "Stack":
-                        viewModel.gamemode = GameViewModel.Gamemode.stack
+                    case SharedStrings.shared.gamemodeStack.localized():
+                        viewModel.gamemode = MainViewModel.Gamemode.stack
                         break
                     default:
-                        viewModel.gamemode = GameViewModel.Gamemode.standard
+                        viewModel.gamemode = MainViewModel.Gamemode.standard
                         break
                     }
                     gamemodeSelected = true
@@ -56,11 +57,5 @@ struct GamemodeView: View {
                 .cornerRadius(CGFloat.dp(value: 4))
             }
         }
-    }
-}
-
-struct GamemodeView_Previews: PreviewProvider {
-    static var previews: some View {
-        GamemodeView(viewModel: GameViewModel())
     }
 }

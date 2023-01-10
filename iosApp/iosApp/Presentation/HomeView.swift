@@ -2,11 +2,7 @@ import SwiftUI
 import MultiPlatformLibrary
 
 struct HomeView: View {
-    private var viewModel: GameViewModel
-    
-    init(viewModel: GameViewModel) {
-        self.viewModel = viewModel
-    }
+    @Binding var rootIsActive : Bool
     
     var body: some View {
         ZStack {
@@ -14,7 +10,7 @@ struct HomeView: View {
                 .ignoresSafeArea()
             
             VStack {
-                NavigationLink(destination: GamemodeView(viewModel: self.viewModel)) {
+                NavigationLink(destination: GamemodeView()) {
                     Text(SharedStrings.shared.play.localized())
                         .font(.system(size: 48, weight: .regular))
                         .foregroundColor(Color(UIColor.onSurface))
@@ -27,13 +23,6 @@ struct HomeView: View {
                 .cornerRadius(CGFloat.dp(value: 4))
                 .padding()
             }
-            
         }
-    }
-}
-
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView(viewModel: GameViewModel())
     }
 }

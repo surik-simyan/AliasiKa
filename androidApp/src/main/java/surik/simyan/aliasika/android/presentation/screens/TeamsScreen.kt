@@ -16,12 +16,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import surik.simyan.aliasika.GameViewModel
+import org.koin.androidx.compose.get
+import surik.simyan.aliasika.presentation.MainViewModel
 import surik.simyan.aliasika.SharedStrings
 
 @Composable
-fun TeamsScreen(navController: NavHostController, viewModel: GameViewModel) {
+fun TeamsScreen(navController: NavHostController) {
     val context = LocalContext.current
+    val viewModel = get<MainViewModel>()
     var teamOne by remember { mutableStateOf("") }
     var teamTwo by remember { mutableStateOf("") }
 
@@ -77,7 +79,7 @@ fun TeamsScreen(navController: NavHostController, viewModel: GameViewModel) {
                 } else {
                     viewModel.teamTwoName = SharedStrings.playTeamTwo.toString(context)
                 }
-                viewModel.shuffleWords()
+//                viewModel.shuffleWords()
                 navController.navigate("score")
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),

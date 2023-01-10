@@ -18,16 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import dev.icerock.moko.mvvm.flow.compose.observeAsActions
-import surik.simyan.aliasika.GameViewModel
+import org.koin.androidx.compose.get
 import surik.simyan.aliasika.SharedStrings
-import surik.simyan.aliasika.presentation.Guessed
-import surik.simyan.aliasika.presentation.Unguessed
+import surik.simyan.aliasika.presentation.*
 
 @Composable
-fun GameStandardScreen(navController: NavHostController, viewModel: GameViewModel) {
+fun GameStandardScreen(navController: NavHostController, viewModel: StandardGameViewModel = get()) {
     val context = LocalContext.current
-    val playingTeamName: String
-    val playingTeamScore: State<Int>
+    val playingTeamScore: State<Int> = viewModel.score.collectAsState()
     var showAlertDialog by remember { mutableStateOf(false) }
     val wordsStates = rememberSaveable {
         listOf(
@@ -39,16 +37,10 @@ fun GameStandardScreen(navController: NavHostController, viewModel: GameViewMode
         )
     }
 
-    if (viewModel.playingTeam == GameViewModel.PlayingTeam.TeamOne) {
-        playingTeamName = viewModel.teamOneName
-        playingTeamScore = viewModel.teamOneScore.collectAsState()
-    } else {
-        playingTeamName = viewModel.teamTwoName
-        playingTeamScore = viewModel.teamTwoScore.collectAsState()
-    }
-
     val remainingTime by viewModel.remainingTime.collectAsState()
-    val words by viewModel.fiveWords.collectAsState()
+    val words by viewModel.standardWords.collectAsState().also {
+        Log.d("GameStandardScreen", "words: ${it.value}")
+    }
 
     val wordClick: (MutableState<Boolean>) -> Unit = {
         it.value = !it.value
@@ -57,11 +49,11 @@ fun GameStandardScreen(navController: NavHostController, viewModel: GameViewMode
 
     viewModel.actions.observeAsActions { action ->
         when (action) {
-            GameViewModel.Action.RoundFinished -> {
+            AbstractGameViewModel.Action.RoundFinished -> {
                 viewModel.rotateWords()
                 navController.navigateUp()
             }
-            GameViewModel.Action.FiveWordsGuessed -> {
+            AbstractGameViewModel.Action.FiveWordsGuessed -> {
                 wordsStates.forEach {
                     it.value = false
                 }
@@ -116,7 +108,7 @@ fun GameStandardScreen(navController: NavHostController, viewModel: GameViewMode
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            playingTeamName,
+                            viewModel.playingTeamName,
                             fontWeight = FontWeight.Normal,
                             fontSize = 24.sp
                         )

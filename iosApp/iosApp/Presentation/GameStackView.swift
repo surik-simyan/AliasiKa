@@ -7,22 +7,10 @@ import Combine
 
 struct GameStackView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
-    @ObservedObject private var viewModel: GameViewModel
+    @ObservedObject private var viewModel = StackGameViewModelHelper().stackGameViewModel
     @State private var showAlertDialog = false
-    private var wordClick: (Int32) -> Void
     @State private var playingTeamName: String = ""
     
-    init(viewModel: GameViewModel) {
-        self.viewModel = viewModel
-        wordClick = { it in
-            viewModel.wordGuessed(index: KotlinInt(int: it))
-        }
-        if(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone) {
-            playingTeamName = viewModel.teamOneName
-        } else {
-            playingTeamName = viewModel.teamTwoName
-        }
-    }
     
     var body: some View {
         ZStack {
@@ -33,9 +21,9 @@ struct GameStackView: View {
                 CardViewWithPadding {
                     HStack {
                         VStack{
-                            Text(playingTeamName)
+                            Text(viewModel.playingTeamName)
                                 .font(.system(size: 24))
-                            Text(String(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone ? viewModel.state(\.teamOneScore) : viewModel.state(\.teamTwoScore)))
+                            Text(String(viewModel.state(\.score)))
                                 .font(.system(size: 32, weight: .bold))
                         }
                         .frame(minWidth: 0, maxWidth: .infinity)
@@ -55,7 +43,7 @@ struct GameStackView: View {
                         VStack(alignment: .leading) {
                             ForEach((viewModel.state(\.stackWords) as [NSString]).enumerated().map { IndexedString(index: $0, string: $1) }, id: \.index) { indexedString in
                                 StackWord(text: String(indexedString.string)) {
-                                    wordClick(Int32(indexedString.index))
+                                    onWordClick(index: Int32(indexedString.index))
                                 }
                             }
                         }
@@ -68,12 +56,7 @@ struct GameStackView: View {
             .ignoresSafeArea(.all, edges: .bottom)
         }
         .onAppear {
-            if(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone) {
-                playingTeamName = viewModel.teamOneName
-            } else {
-                playingTeamName = viewModel.teamTwoName
-            }
-            viewModel.startTimer()
+            playingTeamName = viewModel.playingTeamName
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action : {
@@ -90,7 +73,7 @@ struct GameStackView: View {
                 secondaryButton: .cancel(Text(SharedStrings.shared.gameFinishNegative.localized())))
         }
         .onReceive(createPublisher(viewModel.actions)) { action in
-            let actionKs = GameViewModelActionKs(action)
+            let actionKs = AbstractGameViewModelActionKs(action)
             switch(actionKs) {
             case .roundFinished:
                 print("round finished")
@@ -102,6 +85,10 @@ struct GameStackView: View {
             }
         }
         .ignoresSafeArea(.all, edges: .bottom)
+    }
+    
+    func onWordClick(index: Int32) -> Void {
+        viewModel.wordGuessed(index: KotlinInt(int: index))
     }
 }
 
@@ -127,10 +114,4 @@ struct StackWord: View {
 struct IndexedString {
     let index: Int
     let string: NSString
-}
-
-struct GameStackView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameStackView(viewModel: GameViewModel())
-    }
 }

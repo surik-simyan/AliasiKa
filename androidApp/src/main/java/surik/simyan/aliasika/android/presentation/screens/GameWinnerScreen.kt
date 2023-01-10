@@ -15,16 +15,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import surik.simyan.aliasika.GameViewModel
+import org.koin.androidx.compose.get
+import surik.simyan.aliasika.presentation.MainViewModel
 import surik.simyan.aliasika.gameEnd
 
 @Composable
-fun GameWinnerScreen(navController: NavHostController, viewModel: GameViewModel) {
+fun GameWinnerScreen(navController: NavHostController) {
     val context = LocalContext.current
+    val viewModel = get<MainViewModel>()
     Surface(color = MaterialTheme.colors.secondary) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
-                gameEnd(viewModel.winnerTeam).toString(context),
+                gameEnd(viewModel.winnerTeamName()).toString(context),
                 fontSize = 72.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center

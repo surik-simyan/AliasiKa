@@ -18,29 +18,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import dev.icerock.moko.mvvm.flow.compose.observeAsActions
-import surik.simyan.aliasika.GameViewModel
+import org.koin.androidx.compose.get
 import surik.simyan.aliasika.SharedStrings
+import surik.simyan.aliasika.presentation.AbstractGameViewModel
+import surik.simyan.aliasika.presentation.StackGameViewModel
 
 @Composable
-fun GameStackScreen(navController: NavHostController, viewModel: GameViewModel) {
+fun GameStackScreen(navController: NavHostController, viewModel: StackGameViewModel = get()) {
     val context = LocalContext.current
-    val playingTeamName: String
-    val playingTeamScore: State<Int>
+    val playingTeamScore: State<Int> = viewModel.score.collectAsState()
     var showAlertDialog by remember { mutableStateOf(false) }
     val lazyColumnState = rememberLazyListState()
-    val visibleItemsInfo = remember {
-        derivedStateOf {
-            lazyColumnState.layoutInfo.visibleItemsInfo.lastIndex
-        }
-    }
 
-    if (viewModel.playingTeam == GameViewModel.PlayingTeam.TeamOne) {
-        playingTeamName = viewModel.teamOneName
-        playingTeamScore = viewModel.teamOneScore.collectAsState()
-    } else {
-        playingTeamName = viewModel.teamTwoName
-        playingTeamScore = viewModel.teamTwoScore.collectAsState()
-    }
     val remainingTime by viewModel.remainingTime.collectAsState()
     val words by viewModel.stackWords.collectAsState()
 
@@ -49,7 +38,7 @@ fun GameStackScreen(navController: NavHostController, viewModel: GameViewModel) 
     }
 
     viewModel.actions.observeAsActions { action ->
-        if (action is GameViewModel.Action.RoundFinished) {
+        if (action is AbstractGameViewModel.Action.RoundFinished) {
             viewModel.rotateWords()
             navController.navigateUp()
         }
@@ -100,7 +89,7 @@ fun GameStackScreen(navController: NavHostController, viewModel: GameViewModel) 
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            playingTeamName,
+                            viewModel.playingTeamName,
                             fontWeight = FontWeight.Normal,
                             fontSize = 24.sp
                         )

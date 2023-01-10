@@ -19,12 +19,14 @@ import com.sd.lib.compose.wheel_picker.FVerticalWheelPicker
 import com.sd.lib.compose.wheel_picker.FWheelPickerFocusVertical
 import com.sd.lib.compose.wheel_picker.rememberFWheelPickerState
 import kotlinx.coroutines.delay
-import surik.simyan.aliasika.GameViewModel
+import org.koin.androidx.compose.get
 import surik.simyan.aliasika.SharedStrings
+import surik.simyan.aliasika.presentation.MainViewModel
 
 @Composable
-fun TimeScreen(navController: NavHostController, viewModel: GameViewModel) {
+fun TimeScreen(navController: NavHostController) {
     val context = LocalContext.current
+    val viewModel = get<MainViewModel>()
     val timeRange = (20..120).step(5).toList()
     var pickerValue by remember { mutableStateOf(timeRange[6]) }
     val state = rememberFWheelPickerState(6)

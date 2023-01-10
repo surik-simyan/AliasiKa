@@ -7,28 +7,9 @@ import CardStack
 
 struct GameSwipeView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
-    @ObservedObject private var viewModel: GameViewModel
+    @ObservedObject private var viewModel = SwipeGameViewModelHelper().swipeGameViewModel
     @State private var showAlertDialog = false
-    private var wordSwipe: (LeftRight) -> Void
     @State private var playingTeamName: String = ""
-    
-    
-    init(viewModel: GameViewModel) {
-        self.viewModel = viewModel
-        wordSwipe = { it in
-            if it == LeftRight.right {
-                viewModel.wordGuessed(index: nil)
-            } else {
-                viewModel.wordUnguessed()
-            }
-        }
-        if(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone) {
-            playingTeamName = viewModel.teamOneName
-        } else {
-            playingTeamName = viewModel.teamTwoName
-        }
-    }
-    
     
     var body: some View {
         ZStack {
@@ -41,7 +22,7 @@ struct GameSwipeView: View {
                         VStack{
                             Text(playingTeamName)
                                 .font(.system(size: 24))
-                            Text(String(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone ? viewModel.state(\.teamOneScore) : viewModel.state(\.teamTwoScore)))
+                            Text(String(viewModel.state(\.score)))
                                 .font(.system(size: 32, weight: .bold))
                         }
                         .frame(minWidth: 0, maxWidth: .infinity)
@@ -58,9 +39,9 @@ struct GameSwipeView: View {
                 Spacer(minLength: 22)
                 CardStack(
                     direction: LeftRight.direction,
-                    data: viewModel.state(\.words) as [NSString],
+                    data: viewModel.state(\.swipeWords) as [NSString],
                     onSwipe: { card, direction in
-                        wordSwipe(direction)
+                        onWordSwipe(direction: direction)
                     },
                     content: { card, direction, isOnTop in
                         CardView{
@@ -80,7 +61,7 @@ struct GameSwipeView: View {
                 ZStack {
                     HStack {
                         Button(action: {
-                            wordSwipe(LeftRight.left)
+                            onWordSwipe(direction: LeftRight.left)
                         }) {
                             Text(SharedStrings.shared.gameWrong.localized())
                                 .font(.system(size: 24))
@@ -94,7 +75,7 @@ struct GameSwipeView: View {
                         .frame(minWidth: 0, maxWidth: .infinity)
                         Spacer()
                         Button(action: {
-                            wordSwipe(LeftRight.right)
+                            onWordSwipe(direction: LeftRight.right)
                         }) {
                             Text(SharedStrings.shared.gameCorrect.localized())
                                 .font(.system(size: 24))
@@ -112,12 +93,7 @@ struct GameSwipeView: View {
             .padding(16)
         }
         .onAppear {
-            if(viewModel.playingTeam == GameViewModel.PlayingTeam.teamone) {
-                playingTeamName = viewModel.teamOneName
-            } else {
-                playingTeamName = viewModel.teamTwoName
-            }
-            viewModel.startTimer()
+            playingTeamName = viewModel.playingTeamName
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action : {
@@ -134,7 +110,7 @@ struct GameSwipeView: View {
                 secondaryButton: .cancel(Text(SharedStrings.shared.gameFinishNegative.localized())))
         }
         .onReceive(createPublisher(viewModel.actions)) { action in
-            let actionKs = GameViewModelActionKs(action)
+            let actionKs = AbstractGameViewModelActionKs(action)
             switch(actionKs) {
             case .roundFinished:
                 print("round finished")
@@ -146,10 +122,12 @@ struct GameSwipeView: View {
             }
         }
     }
-}
-
-struct GameSwipeView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameSwipeView(viewModel: GameViewModel())
+    
+    func onWordSwipe(direction: LeftRight) -> Void {
+        if direction == LeftRight.right {
+            viewModel.wordGuessed(index: nil)
+        } else {
+            viewModel.wordUnguessed()
+        }
     }
 }
