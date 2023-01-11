@@ -126,6 +126,15 @@ classDiagram
         STACK 
 }
 ```
+# 📝 Roadmap of updates after KotlinConf Contest
+- [ ] Fix card swipes in iOS
+- [ ] Improve apps architecture
+- [ ] Add custom words with .csv files
+- [ ] Add list of gamemodes
+- [ ] Add sounds
+- [ ] Add ingame spontaneous events
+- [ ] Translate app to several languages
+- [ ] Publish app to AppStore and Google Play (F-Droid optionally)
 
 # 📚 Used libraries and frameworks
 **[Kotlin Multiplatform Mobile](https://kotlinlang.org/lp/mobile/)** <br>
