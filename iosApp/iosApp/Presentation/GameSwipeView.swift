@@ -9,7 +9,6 @@ struct GameSwipeView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @ObservedObject private var viewModel = SwipeGameViewModelHelper().swipeGameViewModel
     @State private var showAlertDialog = false
-    @State private var words:[NSString] = []
     @State private var playingTeamName: String = ""
     
     var body: some View {
@@ -52,6 +51,7 @@ struct GameSwipeView: View {
                         }
                     }
                 )
+                .allowsHitTesting(false)
                 Spacer(minLength: 32)
                 ZStack {
                     HStack {
@@ -89,11 +89,6 @@ struct GameSwipeView: View {
         }
         .onAppear {
             playingTeamName = viewModel.playingTeamName
-            print("before")
-            print(viewModel.swipeWords.value as! [NSString])
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                onWordSwipe(direction: LeftRight.right)
-            }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action : {
@@ -127,7 +122,5 @@ struct GameSwipeView: View {
         } else {
             viewModel.wordUnguessed()
         }
-        print("after")
-        print(viewModel.swipeWords.value as! [NSString])
     }
 }
