@@ -2,8 +2,6 @@ import SwiftUI
 import MultiPlatformLibrary
 
 struct HomeView: View {
-    @Binding var rootIsActive : Bool
-    
     var body: some View {
         ZStack {
             Color(UIColor.secondary)

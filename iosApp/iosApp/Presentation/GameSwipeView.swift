@@ -9,6 +9,7 @@ struct GameSwipeView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @ObservedObject private var viewModel = SwipeGameViewModelHelper().swipeGameViewModel
     @State private var showAlertDialog = false
+    @State private var words:[NSString] = []
     @State private var playingTeamName: String = ""
     
     var body: some View {
@@ -50,13 +51,7 @@ struct GameSwipeView: View {
                                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                         }
                     }
-                ).environment(\.cardStackConfiguration, CardStackConfiguration(
-                    maxVisibleCards: 2,
-                    swipeThreshold: 0.1,
-                    cardOffset: 10,
-                    cardScale: 0.2,
-                    animation: .linear
-                ))
+                )
                 Spacer(minLength: 32)
                 ZStack {
                     HStack {
@@ -94,6 +89,11 @@ struct GameSwipeView: View {
         }
         .onAppear {
             playingTeamName = viewModel.playingTeamName
+            print("before")
+            print(viewModel.swipeWords.value as! [NSString])
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                onWordSwipe(direction: LeftRight.right)
+            }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action : {
@@ -113,11 +113,9 @@ struct GameSwipeView: View {
             let actionKs = AbstractGameViewModelActionKs(action)
             switch(actionKs) {
             case .roundFinished:
-                print("round finished")
                 mode.wrappedValue.dismiss()
                 break
             default:
-                print("else")
                 break
             }
         }
@@ -129,5 +127,7 @@ struct GameSwipeView: View {
         } else {
             viewModel.wordUnguessed()
         }
+        print("after")
+        print(viewModel.swipeWords.value as! [NSString])
     }
 }

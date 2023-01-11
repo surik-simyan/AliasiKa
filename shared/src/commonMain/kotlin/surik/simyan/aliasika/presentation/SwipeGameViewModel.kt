@@ -5,7 +5,6 @@ import dev.icerock.moko.mvvm.flow.CStateFlow
 import dev.icerock.moko.mvvm.flow.cMutableStateFlow
 import dev.icerock.moko.mvvm.flow.cStateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import surik.simyan.aliasika.data.TeamsRepository
 import surik.simyan.aliasika.data.WordsRepository
 
@@ -16,30 +15,26 @@ class SwipeGameViewModel(
 ) :
     AbstractGameViewModel(playingTime, wordsRepository, teamsRepository) {
 
+    private val _swipeWords: CMutableStateFlow<List<String>> =
+        MutableStateFlow(listOf<String>()).cMutableStateFlow()
+    val swipeWords: CStateFlow<List<String>> = _swipeWords.cStateFlow()
+
     init {
         updateSwipeWords()
         startTimer()
     }
 
-    private val _swipeWords: CMutableStateFlow<List<String>> =
-        MutableStateFlow(listOf<String>()).cMutableStateFlow()
-    val swipeWords: CStateFlow<List<String>> = _swipeWords.cStateFlow()
-
     private fun updateSwipeWords() {
-        viewModelScope.launch {
-            _swipeWords.emit(words.take(SWIPE_GAMEMODE_WORD_COUNT + 1))
-        }
+        _swipeWords.value = words.take(SWIPE_GAMEMODE_WORD_COUNT)
     }
 
     override fun rotateWords(index: Int?) {
-        repeat(SWIPE_GAMEMODE_WORD_COUNT) {
-            words.add(words.removeAt(0))
-        }
+        words.add(words.removeAt(0))
         updateSwipeWords()
     }
 
     override fun rotateRepoWords() {
-        wordsRepository.rotateWords(SWIPE_GAMEMODE_WORD_COUNT + 1)
+        wordsRepository.rotateWords(SWIPE_GAMEMODE_WORD_COUNT)
     }
 
     override fun wordGuessed(index: Int?) {

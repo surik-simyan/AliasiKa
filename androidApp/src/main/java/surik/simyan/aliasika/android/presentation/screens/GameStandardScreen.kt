@@ -1,6 +1,5 @@
 package surik.simyan.aliasika.android.presentation.screens
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +25,8 @@ import surik.simyan.aliasika.presentation.*
 fun GameStandardScreen(navController: NavHostController, viewModel: StandardGameViewModel = get()) {
     val context = LocalContext.current
     val playingTeamScore: State<Int> = viewModel.score.collectAsState()
+    val remainingTime by viewModel.remainingTime.collectAsState()
+    val words by viewModel.standardWords.collectAsState()
     var showAlertDialog by remember { mutableStateOf(false) }
     val wordsStates = rememberSaveable {
         listOf(
@@ -35,11 +36,6 @@ fun GameStandardScreen(navController: NavHostController, viewModel: StandardGame
             mutableStateOf(false),
             mutableStateOf(false)
         )
-    }
-
-    val remainingTime by viewModel.remainingTime.collectAsState()
-    val words by viewModel.standardWords.collectAsState().also {
-        Log.d("GameStandardScreen", "words: ${it.value}")
     }
 
     val wordClick: (MutableState<Boolean>) -> Unit = {

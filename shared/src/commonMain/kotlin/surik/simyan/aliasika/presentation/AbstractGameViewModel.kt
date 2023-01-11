@@ -1,6 +1,5 @@
 package surik.simyan.aliasika.presentation
 
-import co.touchlab.kermit.Logger
 import dev.icerock.moko.mvvm.flow.*
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.channels.Channel
@@ -17,37 +16,33 @@ abstract class AbstractGameViewModel(
     val wordsRepository: WordsRepository,
     private val teamsRepository: TeamsRepository
 ) : ViewModel() {
-    val playingTeamName = teamsRepository.playingTeamName
+    val playingTeamName = teamsRepository.playingTeamName.value
 
     private val _score: CMutableStateFlow<Int> =
-        MutableStateFlow(teamsRepository.playingTeamScore).cMutableStateFlow()
+        MutableStateFlow(teamsRepository.playingTeamScore.value).cMutableStateFlow()
     val score: CStateFlow<Int> = _score.cStateFlow()
 
-    val words: MutableList<String> = wordsRepository.words
+    val words: MutableList<String> = wordsRepository.words.toMutableList()
 
     private val _remainingTime: MutableStateFlow<String> = MutableStateFlow("")
     val remainingTime: CStateFlow<String> = _remainingTime.cStateFlow()
 
-    val _actions = Channel<Action>(Channel.BUFFERED)
+    protected val _actions = Channel<Action>(Channel.BUFFERED)
     val actions: CFlow<Action> get() = _actions.receiveAsFlow().cFlow()
 
     fun startTimer() {
-        Logger.d { "startTimer" }
         timer.startTimer(playingTime.toLong())
     }
 
     fun pauseTimer() {
-        Logger.d { "pauseTimer" }
         timer.pauseTimer()
     }
 
     fun resumeTimer() {
-        Logger.d { "resumeTimer" }
         timer.continueTimer()
     }
 
-    fun stopTimer() {
-        Logger.d { "stopTimer" }
+    private fun stopTimer() {
         timer.stopTimer()
     }
 
@@ -66,9 +61,7 @@ abstract class AbstractGameViewModel(
         rotateRepoWords()
         changeRepoPoints()
         viewModelScope.launch {
-            _actions.send(Action.RoundFinished).also {
-                Logger.d { "RoundFinished" }
-            }
+            _actions.send(Action.RoundFinished)
         }
     }
 
@@ -105,7 +98,7 @@ abstract class AbstractGameViewModel(
 
     companion object {
         const val STANDARD_GAMEMODE_WORD_COUNT = 5
-        const val SWIPE_GAMEMODE_WORD_COUNT = 1
+        const val SWIPE_GAMEMODE_WORD_COUNT = 2
         const val STACK_GAMEMODE_WORD_COUNT =
             20 // THIS IS HARDCODE DUE THE FACT THAT I WAS UNABLE TO GET AMOUNT OF WORDS IN SWIFT UI
     }

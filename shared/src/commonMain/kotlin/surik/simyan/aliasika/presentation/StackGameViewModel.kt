@@ -16,14 +16,14 @@ class StackGameViewModel(
 ) :
     AbstractGameViewModel(playingTime, wordsRepository, teamsRepository) {
 
+    private val _stackWords: CMutableStateFlow<List<String>> =
+        MutableStateFlow(listOf<String>()).cMutableStateFlow()
+    val stackWords: CStateFlow<List<String>> = _stackWords.cStateFlow()
+
     init {
         updateStackWords()
         startTimer()
     }
-
-    private val _stackWords: CMutableStateFlow<List<String>> =
-        MutableStateFlow(listOf<String>()).cMutableStateFlow()
-    val stackWords: CStateFlow<List<String>> = _stackWords.cStateFlow()
 
     private fun updateStackWords() {
         viewModelScope.launch {

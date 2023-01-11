@@ -79,7 +79,6 @@ fun GameSwipeScreen(navController: NavHostController, viewModel: SwipeGameViewMo
                 .padding(16.dp)
         ) {
             Card(
-                backgroundColor = Color.White,
                 shape = MaterialTheme.shapes.medium
             ) {
                 Row {
@@ -177,7 +176,6 @@ fun GameSwipeScreen(navController: NavHostController, viewModel: SwipeGameViewMo
 @Composable
 fun SwipeWord(text: String) {
     Card(
-        backgroundColor = Color.White,
         elevation = 8.dp
     ) {
         Box(
@@ -188,8 +186,7 @@ fun SwipeWord(text: String) {
                 text,
                 textAlign = TextAlign.Center,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
+                fontWeight = FontWeight.Bold
             )
         }
     }

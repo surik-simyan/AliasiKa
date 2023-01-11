@@ -30,7 +30,3 @@ object SharedStrings {
     val playTeams: StringDesc = MR.strings.play_teams.desc()
     val play: StringDesc = MR.strings.wordset_play.desc()
 }
-
-fun gameEnd(input: String): StringDesc {
-    return MR.strings.game_end.format(input)
-}

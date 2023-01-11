@@ -17,26 +17,25 @@ class StandardGameViewModel(
 ) :
     AbstractGameViewModel(playingTime, wordsRepository, teamsRepository) {
 
-    init {
-//        updateStandardWords()
-        viewModelScope.launch {
-            _standardWords.emit(words.take(STANDARD_GAMEMODE_WORD_COUNT))
-        }
-        startTimer()
-    }
-
     private val _standardWords: CMutableStateFlow<List<String>> =
         MutableStateFlow(listOf<String>()).cMutableStateFlow()
     val standardWords: CStateFlow<List<String>> = _standardWords.cStateFlow()
 
     private var guessedWordsCount = 0
 
+    init {
+        fillFirstFiveWords()
+        startTimer()
+    }
+
+    private fun fillFirstFiveWords() {
+        _standardWords.value = words.take(STANDARD_GAMEMODE_WORD_COUNT)
+    }
+
     private fun updateStandardWords() {
         viewModelScope.launch {
             _standardWords.emit(words.take(STANDARD_GAMEMODE_WORD_COUNT))
-            _actions.send(Action.FiveWordsGuessed).also {
-                Logger.d { "FiveWordsGuessed" }
-            }
+            _actions.send(Action.FiveWordsGuessed)
         }
     }
 

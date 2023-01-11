@@ -10,7 +10,6 @@ import surik.simyan.aliasika.android.presentation.screens.*
 import surik.simyan.aliasika.android.presentation.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

@@ -2,12 +2,10 @@ package surik.simyan.aliasika.data
 
 class WordsRepository {
 
-    val words = (WORDS + PEOPLE).split(",").shuffled().toMutableList()
+    var words = (WORDS + PEOPLE).split(",").shuffled()
 
     fun rotateWords(count: Int) {
-        repeat(count) {
-            words.add(words.removeAt(0))
-        }
+        words = words.drop(count) + words.take(count)
     }
 
     companion object {

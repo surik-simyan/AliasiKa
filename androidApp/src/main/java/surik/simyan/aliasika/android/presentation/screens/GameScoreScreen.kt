@@ -18,10 +18,13 @@ import surik.simyan.aliasika.SharedStrings
 import surik.simyan.aliasika.presentation.MainViewModel
 
 @Composable
-fun GameScoreScreen(navController: NavHostController) {
+fun GameScoreScreen(navController: NavHostController, viewModel: MainViewModel = get()) {
     val context = LocalContext.current
-    val viewModel = get<MainViewModel>()
     var showAlertDialog by remember { mutableStateOf(false) }
+
+    val teamOneScore: State<Int> = viewModel.teamOneScore.collectAsState()
+    val teamTwoScore: State<Int> = viewModel.teamTwoScore.collectAsState()
+    val playingTeamName: State<String> = viewModel.playingTeamName.collectAsState()
 
     if (viewModel.isGameEnded()) {
         navController.navigate("winner") {
@@ -32,7 +35,7 @@ fun GameScoreScreen(navController: NavHostController) {
     }
 
     BackHandler {
-        if (viewModel.teamOneScore > 0 || viewModel.teamTwoScore > 0) {
+        if (teamOneScore.value > 0 || teamTwoScore.value > 0) {
             showAlertDialog = true
         } else {
             Log.d("BackScore", "Score navigateUp")
@@ -82,7 +85,7 @@ fun GameScoreScreen(navController: NavHostController) {
                             fontSize = 24.sp
                         )
                         Text(
-                            viewModel.teamOneScore.toString(),
+                            teamOneScore.value.toString(),
                             fontWeight = FontWeight.Bold,
                             fontSize = 32.sp
                         )
@@ -98,7 +101,7 @@ fun GameScoreScreen(navController: NavHostController) {
                             fontSize = 24.sp
                         )
                         Text(
-                            viewModel.teamTwoScore.toString(),
+                            teamTwoScore.value.toString(),
                             fontWeight = FontWeight.Bold,
                             fontSize = 32.sp
                         )
@@ -121,7 +124,7 @@ fun GameScoreScreen(navController: NavHostController) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        viewModel.playingTeamName(),
+                        playingTeamName.value,
                         fontWeight = FontWeight.Normal,
                         fontSize = 48.sp
                     )
