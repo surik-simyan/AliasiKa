@@ -126,13 +126,8 @@ classDiagram
         STACK 
 }
 ```
-# ⚠️ Known bugs
-If the iOS application does not start with the error `No such module 'MultiPlatformLibrarySwift'`, please refer to [this](https://github.com/icerockdev/moko-kswift/issues/55#issuecomment-1200139522) issue and try following.
- 1. `./gradlew clean` in the root directory
- 2. Try to run app in XCode (it's okay if it will fail)
- 3. Go to /iosApp and run `pod install`
- 4. Try to launch again. <br>
-If the app doesn't work again after that, contact me at surik.simyan@gmail.com.
+# ℹ️ For KotlinConf judges
+In case of any problems with app testing or deploying feel free to contact be by [email](mailto:surik.simyan@gmail.com) or on Slack `@SurikSimonyan`
 
 # 📝 Roadmap of updates after KotlinConf Contest
 - [ ] Fix card swipes in iOS
