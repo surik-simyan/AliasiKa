@@ -2,7 +2,6 @@ target 'iosApp' do
   use_frameworks!
   platform :ios, '14.1'
   pod 'shared', :path => '../shared'
-  pod 'sharedSwift', :path => '../shared'
   pod 'mokoMvvmFlowSwiftUI', :podspec => 'https://raw.githubusercontent.com/icerockdev/moko-mvvm/release/0.15.0/mokoMvvmFlowSwiftUI.podspec'
   pod "SwiftUICardStack"
 end

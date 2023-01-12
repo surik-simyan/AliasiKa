@@ -1,6 +1,5 @@
 import SwiftUI
 import MultiPlatformLibrary
-import MultiPlatformLibrarySwift
 import Combine
 import mokoMvvmFlowSwiftUI
 import CardStack

@@ -24,6 +24,7 @@
 		0321F0D62965915600F4D481 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62237096E9E3F374DA0BA2D4 /* Pods_iosApp.framework */; };
 		0324B7D1296CC11E009C2DBF /* NavigationLazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324B7D0296CC11E009C2DBF /* NavigationLazyView.swift */; };
 		0366A92229704B95001255BD /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0366A92129704B95001255BD /* AppState.swift */; };
+		036ADB8A297052D00058AD8E /* AliasiKa_shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ADB89297052D00058AD8E /* AliasiKa_shared.swift */; };
 		036C2A442966DB0000A07C24 /* CardViewWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C2A432966DB0000A07C24 /* CardViewWithPadding.swift */; };
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		0321F0CC29658F5100F4D481 /* mokoMvvmFlowSwiftUI.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = mokoMvvmFlowSwiftUI.xcframework; path = Pods/mokoMvvmFlowSwiftUI/mokoMvvmFlowSwiftUI.xcframework; sourceTree = "<group>"; };
 		0324B7D0296CC11E009C2DBF /* NavigationLazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLazyView.swift; sourceTree = "<group>"; };
 		0366A92129704B95001255BD /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		036ADB89297052D00058AD8E /* AliasiKa_shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasiKa_shared.swift; sourceTree = "<group>"; };
 		036C2A432966DB0000A07C24 /* CardViewWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewWithPadding.swift; sourceTree = "<group>"; };
 		03F24BA823E0A1743B9F9274 /* Pods-iosApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.debug.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.debug.xcconfig"; sourceTree = "<group>"; };
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 		0321F0AE2965850E00F4D481 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				036ADB89297052D00058AD8E /* AliasiKa_shared.swift */,
 				0321F0B22965850E00F4D481 /* CGFloat.swift */,
 				0324B7D0296CC11E009C2DBF /* NavigationLazyView.swift */,
 				0321F0B12965850E00F4D481 /* UIColor.swift */,
@@ -296,6 +299,7 @@
 				0321F0C22965850F00F4D481 /* GameSwipeView.swift in Sources */,
 				030AB7F1296C3D0D000E6CD1 /* GameWinnerView.swift in Sources */,
 				0321F0C62965850F00F4D481 /* HomeView.swift in Sources */,
+				036ADB8A297052D00058AD8E /* AliasiKa_shared.swift in Sources */,
 				0321F0C52965850F00F4D481 /* GamemodeView.swift in Sources */,
 				0321F0BE2965850F00F4D481 /* View.swift in Sources */,
 				0321F0C32965850F00F4D481 /* CardView.swift in Sources */,

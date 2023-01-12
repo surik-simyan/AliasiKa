@@ -32,21 +32,3 @@ allprojects {
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink>()
-    .matching { it.binary is org.jetbrains.kotlin.gradle.plugin.mpp.Framework }
-    .configureEach {
-        doLast {
-            val kSwiftGeneratedDir = destinationDirectory.get()
-                .dir("${binary.baseName}Swift")
-                .asFile
-
-            val kSwiftPodSourceDir = buildDir
-                .resolve("cocoapods")
-                .resolve("framework")
-                .resolve("${binary.baseName}Swift")
-
-            kSwiftGeneratedDir.copyRecursively(kSwiftPodSourceDir, overwrite = true)
-            println("[COPIED] $kSwiftGeneratedDir -> $kSwiftPodSourceDir")
-        }
-    }

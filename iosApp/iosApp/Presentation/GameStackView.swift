@@ -1,7 +1,6 @@
 import SwiftUI
 import Foundation
 import MultiPlatformLibrary
-import MultiPlatformLibrarySwift
 import mokoMvvmFlowSwiftUI
 import Combine
 
