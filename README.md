@@ -130,7 +130,7 @@ classDiagram
 - [ ] Fix card swipes in iOS
 - [ ] Improve apps architecture
 - [ ] Add custom words with .csv files
-- [ ] Add list of gamemodes
+- [ ] Add list of wordsets
 - [ ] Add sounds
 - [ ] Add ingame spontaneous events
 - [ ] Translate app to several languages
