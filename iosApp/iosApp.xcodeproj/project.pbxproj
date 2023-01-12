@@ -22,28 +22,13 @@
 		0321F0CA2965850F00F4D481 /* GameStandardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321F0BC2965850E00F4D481 /* GameStandardView.swift */; };
 		0321F0CB2965850F00F4D481 /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321F0BD2965850E00F4D481 /* TimeView.swift */; };
 		0321F0D62965915600F4D481 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62237096E9E3F374DA0BA2D4 /* Pods_iosApp.framework */; };
-		0321F0D72965915600F4D481 /* Pods_iosApp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 62237096E9E3F374DA0BA2D4 /* Pods_iosApp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0324B7D1296CC11E009C2DBF /* NavigationLazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324B7D0296CC11E009C2DBF /* NavigationLazyView.swift */; };
+		0366A92229704B95001255BD /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0366A92129704B95001255BD /* AppState.swift */; };
 		036C2A442966DB0000A07C24 /* CardViewWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C2A432966DB0000A07C24 /* CardViewWithPadding.swift */; };
-		0384CBB6296DE89F00240931 /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0384CBB5296DE89F00240931 /* SwipeView.swift */; };
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		0321F0D82965915600F4D481 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				0321F0D72965915600F4D481 /* Pods_iosApp.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		030AB7F0296C3D0D000E6CD1 /* GameWinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWinnerView.swift; sourceTree = "<group>"; };
@@ -62,8 +47,8 @@
 		0321F0BD2965850E00F4D481 /* TimeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
 		0321F0CC29658F5100F4D481 /* mokoMvvmFlowSwiftUI.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = mokoMvvmFlowSwiftUI.xcframework; path = Pods/mokoMvvmFlowSwiftUI/mokoMvvmFlowSwiftUI.xcframework; sourceTree = "<group>"; };
 		0324B7D0296CC11E009C2DBF /* NavigationLazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLazyView.swift; sourceTree = "<group>"; };
+		0366A92129704B95001255BD /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		036C2A432966DB0000A07C24 /* CardViewWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewWithPadding.swift; sourceTree = "<group>"; };
-		0384CBB5296DE89F00240931 /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
 		03F24BA823E0A1743B9F9274 /* Pods-iosApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.debug.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.debug.xcconfig"; sourceTree = "<group>"; };
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -91,9 +76,9 @@
 			children = (
 				0321F0B22965850E00F4D481 /* CGFloat.swift */,
 				0324B7D0296CC11E009C2DBF /* NavigationLazyView.swift */,
-				0384CBB5296DE89F00240931 /* SwipeView.swift */,
 				0321F0B12965850E00F4D481 /* UIColor.swift */,
 				0321F0AF2965850E00F4D481 /* View.swift */,
+				0366A92129704B95001255BD /* AppState.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -194,7 +179,6 @@
 				7555FF79242A565900829871 /* Resources */,
 				4A872C0D406A4784E30DD6B2 /* Frameworks */,
 				7C8F268F0458F0EFB98BE476 /* [CP] Embed Pods Frameworks */,
-				0321F0D82965915600F4D481 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -304,6 +288,7 @@
 				0321F0C42965850F00F4D481 /* TeamsView.swift in Sources */,
 				0321F0C12965850F00F4D481 /* CGFloat.swift in Sources */,
 				0324B7D1296CC11E009C2DBF /* NavigationLazyView.swift in Sources */,
+				0366A92229704B95001255BD /* AppState.swift in Sources */,
 				0321F0CB2965850F00F4D481 /* TimeView.swift in Sources */,
 				0321F0C72965850F00F4D481 /* GameScoreView.swift in Sources */,
 				0321F0CA2965850F00F4D481 /* GameStandardView.swift in Sources */,
@@ -316,7 +301,6 @@
 				0321F0C32965850F00F4D481 /* CardView.swift in Sources */,
 				036C2A442966DB0000A07C24 /* CardViewWithPadding.swift in Sources */,
 				0321F0C92965850F00F4D481 /* PointsView.swift in Sources */,
-				0384CBB6296DE89F00240931 /* SwipeView.swift in Sources */,
 				0321F0C82965850F00F4D481 /* GameStackView.swift in Sources */,
 				0321F0C02965850F00F4D481 /* UIColor.swift in Sources */,
 			);

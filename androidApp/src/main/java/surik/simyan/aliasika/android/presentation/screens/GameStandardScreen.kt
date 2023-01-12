@@ -1,5 +1,6 @@
 package surik.simyan.aliasika.android.presentation.screens
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,11 +19,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import dev.icerock.moko.mvvm.flow.compose.observeAsActions
 import org.koin.androidx.compose.get
+import org.koin.androidx.compose.koinViewModel
 import surik.simyan.aliasika.SharedStrings
 import surik.simyan.aliasika.presentation.*
 
 @Composable
-fun GameStandardScreen(navController: NavHostController, viewModel: StandardGameViewModel = get()) {
+fun GameStandardScreen(
+    navController: NavHostController,
+    viewModel: StandardGameViewModel = koinViewModel()
+) {
     val context = LocalContext.current
     val playingTeamScore: State<Int> = viewModel.score.collectAsState()
     val remainingTime by viewModel.remainingTime.collectAsState()
@@ -46,7 +51,6 @@ fun GameStandardScreen(navController: NavHostController, viewModel: StandardGame
     viewModel.actions.observeAsActions { action ->
         when (action) {
             AbstractGameViewModel.Action.RoundFinished -> {
-                viewModel.rotateWords()
                 navController.navigateUp()
             }
             AbstractGameViewModel.Action.FiveWordsGuessed -> {

@@ -19,12 +19,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import dev.icerock.moko.mvvm.flow.compose.observeAsActions
 import org.koin.androidx.compose.get
+import org.koin.androidx.compose.koinViewModel
 import surik.simyan.aliasika.SharedStrings
 import surik.simyan.aliasika.presentation.AbstractGameViewModel
 import surik.simyan.aliasika.presentation.StackGameViewModel
 
 @Composable
-fun GameStackScreen(navController: NavHostController, viewModel: StackGameViewModel = get()) {
+fun GameStackScreen(navController: NavHostController, viewModel: StackGameViewModel = koinViewModel()) {
     val context = LocalContext.current
     val playingTeamScore: State<Int> = viewModel.score.collectAsState()
     var showAlertDialog by remember { mutableStateOf(false) }
@@ -39,7 +40,6 @@ fun GameStackScreen(navController: NavHostController, viewModel: StackGameViewMo
 
     viewModel.actions.observeAsActions { action ->
         if (action is AbstractGameViewModel.Action.RoundFinished) {
-            viewModel.rotateWords()
             navController.navigateUp()
         }
     }

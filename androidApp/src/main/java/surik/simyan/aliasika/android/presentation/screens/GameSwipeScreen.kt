@@ -18,11 +18,12 @@ import com.github.theapache64.twyper.Twyper
 import com.github.theapache64.twyper.rememberTwyperController
 import dev.icerock.moko.mvvm.flow.compose.observeAsActions
 import org.koin.androidx.compose.get
+import org.koin.androidx.compose.koinViewModel
 import surik.simyan.aliasika.SharedStrings
 import surik.simyan.aliasika.presentation.*
 
 @Composable
-fun GameSwipeScreen(navController: NavHostController, viewModel: SwipeGameViewModel = get()) {
+fun GameSwipeScreen(navController: NavHostController, viewModel: SwipeGameViewModel = koinViewModel()) {
     val context = LocalContext.current
     val playingTeamScore: State<Int> = viewModel.score.collectAsState()
     var showAlertDialog by remember { mutableStateOf(false) }
@@ -40,7 +41,6 @@ fun GameSwipeScreen(navController: NavHostController, viewModel: SwipeGameViewMo
 
     viewModel.actions.observeAsActions { action ->
         if (action is AbstractGameViewModel.Action.RoundFinished) {
-            viewModel.rotateWords()
             navController.navigateUp()
         }
     }

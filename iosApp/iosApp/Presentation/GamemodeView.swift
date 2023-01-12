@@ -2,7 +2,6 @@ import SwiftUI
 import MultiPlatformLibrary
 
 struct GamemodeView: View {
-    
     private var viewModel = MainViewModelHelper().mainViewModel
     private let strengths = [
         SharedStrings.shared.gamemodeStandard.localized(),

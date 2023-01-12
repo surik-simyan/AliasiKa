@@ -32,8 +32,13 @@ class TeamsRepository {
     val playingTeamScore get() = if (playingTeam == PlayingTeam.TeamOne) teamOneScore else teamTwoScore
 
     private fun changeTeam() {
-        playingTeam =
-            if (playingTeam == PlayingTeam.TeamOne) PlayingTeam.TeamTwo else PlayingTeam.TeamOne
+        if (playingTeam == PlayingTeam.TeamOne) {
+            playingTeam = PlayingTeam.TeamTwo
+            _playingTeamName.value = teamTwoName
+        } else {
+            playingTeam = PlayingTeam.TeamOne
+            _playingTeamName.value = teamOneName
+        }
     }
 
     fun changePoints(value: Int) {

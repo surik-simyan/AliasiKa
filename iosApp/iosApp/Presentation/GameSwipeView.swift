@@ -102,7 +102,7 @@ struct GameSwipeView: View {
                 title: Text(SharedStrings.shared.gameFinishRoundTitle.localized()),
                 message: Text(SharedStrings.shared.gameFinishRoundMessage.localized()),
                 primaryButton: Alert.Button.default(Text(SharedStrings.shared.gameFinishPositive.localized()), action: { viewModel.finishRoundEarly() }),
-                secondaryButton: .cancel(Text(SharedStrings.shared.gameFinishNegative.localized())))
+                secondaryButton: .cancel(Text(SharedStrings.shared.gameFinishNegative.localized()), action: { viewModel.resumeTimer() }))
         }
         .onReceive(createPublisher(viewModel.actions)) { action in
             let actionKs = AbstractGameViewModelActionKs(action)

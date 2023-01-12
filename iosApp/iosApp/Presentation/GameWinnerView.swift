@@ -2,7 +2,7 @@ import SwiftUI
 import MultiPlatformLibrary
 
 struct GameWinnerView: View {
-    @Environment(\.rootPresentationMode) private var rootPresentationMode: Binding<RootPresentationMode>
+    @EnvironmentObject var appState: AppState
     private var viewModel = MainViewModelHelper().mainViewModel
     
     var body: some View {
@@ -13,13 +13,11 @@ struct GameWinnerView: View {
             VStack(alignment: .center) {
                 Text(viewModel.gameWinnerText().localized())
                     .font(.system(size: 72))
-                    .foregroundColor(Color(UIColor.onSurface))
+                    .foregroundColor(Color.white)
                     .multilineTextAlignment(.center)
             }.onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                    viewModel.resetValues()
-                    self.rootPresentationMode.wrappedValue.dismiss()
-                    print("poped to root")
+                    self.appState.moveToHome = true
                 }
             }
         }

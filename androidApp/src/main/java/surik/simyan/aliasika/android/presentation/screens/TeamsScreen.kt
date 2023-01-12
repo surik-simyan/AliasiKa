@@ -79,7 +79,6 @@ fun TeamsScreen(navController: NavHostController) {
                 } else {
                     viewModel.teamTwoName = SharedStrings.playTeamTwo.toString(context)
                 }
-//                viewModel.shuffleWords()
                 navController.navigate("score")
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),

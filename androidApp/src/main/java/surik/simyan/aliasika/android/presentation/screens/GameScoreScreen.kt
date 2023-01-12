@@ -1,6 +1,5 @@
 package surik.simyan.aliasika.android.presentation.screens
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,6 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import dev.icerock.moko.mvvm.flow.compose.observeAsActions
 import org.koin.androidx.compose.get
 import surik.simyan.aliasika.SharedStrings
 import surik.simyan.aliasika.presentation.MainViewModel
@@ -26,19 +26,23 @@ fun GameScoreScreen(navController: NavHostController, viewModel: MainViewModel =
     val teamTwoScore: State<Int> = viewModel.teamTwoScore.collectAsState()
     val playingTeamName: State<String> = viewModel.playingTeamName.collectAsState()
 
-    if (viewModel.isGameEnded()) {
-        navController.navigate("winner") {
-            popUpTo("home") {
-                inclusive = true
+    viewModel.actions.observeAsActions { action ->
+        when (action) {
+            MainViewModel.Action.GameFinished -> {
+                navController.navigate("winner")
             }
+            else -> Unit
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.isGameEnded()
     }
 
     BackHandler {
         if (teamOneScore.value > 0 || teamTwoScore.value > 0) {
             showAlertDialog = true
         } else {
-            Log.d("BackScore", "Score navigateUp")
             navController.navigateUp()
         }
     }

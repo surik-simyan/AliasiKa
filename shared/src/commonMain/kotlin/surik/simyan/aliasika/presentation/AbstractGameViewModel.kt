@@ -3,6 +3,7 @@ package surik.simyan.aliasika.presentation
 import dev.icerock.moko.mvvm.flow.*
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -27,8 +28,8 @@ abstract class AbstractGameViewModel(
     private val _remainingTime: MutableStateFlow<String> = MutableStateFlow("")
     val remainingTime: CStateFlow<String> = _remainingTime.cStateFlow()
 
-    protected val _actions = Channel<Action>(Channel.BUFFERED)
-    val actions: CFlow<Action> get() = _actions.receiveAsFlow().cFlow()
+    protected val _actions = Channel<Action>()
+    val actions: CFlow<Action> = _actions.receiveAsFlow().cFlow()
 
     fun startTimer() {
         timer.startTimer(playingTime.toLong())
@@ -42,25 +43,25 @@ abstract class AbstractGameViewModel(
         timer.continueTimer()
     }
 
-    private fun stopTimer() {
-        timer.stopTimer()
-    }
+    private val timer = CoroutineTimer(
+        object : CoroutineTimerListener {
+            override fun onTick(timeLeft: Long?, error: Exception?) {
+                _remainingTime.value = timeLeft.toString()
+            }
 
-    private val timer = CoroutineTimer(object : CoroutineTimerListener {
-        override fun onTick(timeLeft: Long?, error: Exception?) {
-            _remainingTime.value = timeLeft.toString()
+            override fun onStop(error: Exception?) {
+                super.onStop(error)
+                timerFinished()
+            }
         }
-
-        override fun onStop(error: Exception?) {
-            super.onStop(error)
-            timerFinished()
-        }
-    })
+    )
 
     private fun timerFinished() {
         rotateRepoWords()
         changeRepoPoints()
         viewModelScope.launch {
+            // Again, IDK why but without the delay it doesn't work
+            delay(10)
             _actions.send(Action.RoundFinished)
         }
     }
@@ -70,8 +71,8 @@ abstract class AbstractGameViewModel(
     }
 
     fun finishRoundEarly() {
-        resumeTimer()
-        stopTimer()
+        timer.destroyTimer()
+        timer.stopTimer()
     }
 
     sealed interface Action {

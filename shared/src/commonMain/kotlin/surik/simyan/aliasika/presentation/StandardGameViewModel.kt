@@ -1,6 +1,5 @@
 package surik.simyan.aliasika.presentation
 
-import co.touchlab.kermit.Logger
 import dev.icerock.moko.mvvm.flow.CMutableStateFlow
 import dev.icerock.moko.mvvm.flow.CStateFlow
 import dev.icerock.moko.mvvm.flow.cMutableStateFlow
