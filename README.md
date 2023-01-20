@@ -126,10 +126,7 @@ classDiagram
         STACK 
 }
 ```
-# ℹ️ For KotlinConf judges
-In case of any problems with app testing or deploying feel free to contact be by [email](mailto:surik.simyan@gmail.com) or on Slack `@SurikSimonyan`
-
-# 📝 Roadmap of updates after KotlinConf Contest
+# 📝 Roadmap of updates
 - [ ] Fix card swipes in iOS
 - [ ] Improve apps architecture
 - [ ] Add custom words with .csv files
